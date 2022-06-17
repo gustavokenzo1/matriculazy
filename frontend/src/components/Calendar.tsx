@@ -1,0 +1,110 @@
+import { Dispatch, useState } from "react";
+
+const days: String[] = [
+  "",
+  "Domingo",
+  "Segunda-feira",
+  "Terça-feira",
+  "Quarta-feira",
+  "Quinta-feira",
+  "Sexta-feira",
+  "Sábado",
+];
+const hours: String[] = [
+  "07:00",
+  "08:00",
+  "09:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+  "18:00",
+  "19:00",
+  "20:00",
+  "21:00",
+  "22:00",
+  "23:00",
+];
+
+interface IDay {
+  index: number;
+  hour: String;
+  setOccupied: Dispatch<String[]>;
+  occupied: String[];
+}
+
+function Day({ index, hour, setOccupied, occupied }: IDay) {
+  const handleOccupied = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value: String = e.target.value;
+    const newOccupied = [...occupied];
+
+    if (!newOccupied.includes(value)) {
+      newOccupied.push(value);
+    } else {
+      newOccupied.splice(newOccupied.indexOf(value), 1);
+    }
+
+    setOccupied(newOccupied);
+  };
+  return (
+    <tr key={index}>
+      <td className="border-b border-slate-200 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+        {hour}
+      </td>
+      {Array(7)
+        .fill(0)
+        .map((_, index) => (
+          <td
+            className="border-b text-center border-slate-200 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
+            key={index}
+          >
+            <input
+              onChange={handleOccupied}
+              type="checkbox"
+              className="w-8 h-8 cursor-pointer"
+              value={`${days[index + 1]} às ${hour}`}
+            />
+          </td>
+        ))}
+    </tr>
+  );
+}
+
+function Calendar() {
+  const [occupied, setOccupied] = useState<String[]>([]);
+
+  return (
+    <div className="flex">
+      <table className="border-collapse table-auto w-full text-sm">
+        <thead>
+          <tr>
+            {days.map((day, index) => (
+              <th
+                className="border-b border-orange-400 font-medium p-4 pl-8 pt-0 pb-3 text-orange-400 dark:text-white text-left"
+                key={index}
+              >
+                {day}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {hours.map((hour, index) => (
+            <Day
+              index={index}
+              hour={hour}
+              setOccupied={setOccupied}
+              occupied={occupied}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default Calendar;
