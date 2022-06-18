@@ -27,6 +27,12 @@ export const routes = express.Router();
 
 routes.post("/university", async (req, res) => {
   const { university, initials, url } = req.body;
+
+  const prismaUniversitiesRepository = new PrismaUniversitiesRepository();
+  const createUniversityUseCase = new CreateUniversityUseCase(
+    prismaUniversitiesRepository
+  );
+
   const departments = await scrapeDepartments(url);
 
   const browser = await puppeteer.launch({
@@ -35,11 +41,20 @@ routes.post("/university", async (req, res) => {
   const context = await browser.createIncognitoBrowserContext();
   const page = await context.newPage();
 
-  for (const deparment of departments) {
-    await scrapeCourses(deparment, page, url, initials);
+  const courses = [];
+  for (const department of departments) {
+    const course = await scrapeCourses(department, page, url, initials);
+    if (course.length > 0) {
+      courses.push(course);
+    }
+    // For testing purposes
+    if (courses.length === 5) {
+      break;
+    }
   }
-
   await browser.close();
+
+  await createUniversityUseCase.execute({ university, initials, courses, url });
 
   return res.status(200).send();
 });

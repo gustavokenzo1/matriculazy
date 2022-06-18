@@ -15,7 +15,7 @@ export const scrapeCourses = async (
   await page.click("[type='submit']");
 
   await page.waitForSelector("caption", { visible: true });
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
 
   const table = await page.$$("table > tbody > tr");
   // Jump first table, because it's related to the other options
@@ -33,7 +33,6 @@ export const scrapeCourses = async (
       period: "unavailable",
       teacher: "unavailable",
       schedule: [],
-      simplifiedSchedule: [],
       offers: 0,
       occupied: 0,
       location: "unavailable",
@@ -91,7 +90,7 @@ export const scrapeCourses = async (
         .trim()
         .split(/(?=[A-Z])/);
 
-      course.simplifiedSchedule = (course.schedule as any).map(
+      /* course.simplifiedSchedule = (course.schedule as any).map(
         (schedule: string) => {
           const daySchedule = schedule.split("às");
           let first = daySchedule[0].trim();
@@ -107,7 +106,7 @@ export const scrapeCourses = async (
 
           return [first, second];
         }
-      );
+      ); */
     } catch (error) {}
 
     try {
@@ -138,12 +137,16 @@ export const scrapeCourses = async (
     }
   }
 
-  disciplines.forEach((discipline: any) => {
+  const filteredDisciplines = disciplines.map((discipline: any) => {
     if (discipline.teacher !== "unavailable") {
       discipline.code = discipline.name.split("-")[0].trim();
       discipline.name = discipline.name.split("-")[1].trim();
-      
-      console.log(discipline);
+
+      return discipline;
     }
   });
+
+  const unique = [...new Set(filteredDisciplines)];
+
+  return unique;
 };

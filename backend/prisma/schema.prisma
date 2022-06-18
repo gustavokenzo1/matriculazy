@@ -13,18 +13,20 @@ datasource db {
 model Course {
   id String @id @default(uuid())
 
-  university         String
-  department         String
-  code               String
-  name               String
-  classroom          String
-  period             String
-  teacher            String
-  schedule           String[]
-  simplifiedSchedule String[]
-  offers             Int
-  occupied           Int
-  location           String
+  university String
+  department String
+  code       String
+  name       String
+  classroom  String
+  period     String
+  teacher    String
+  schedule   String[]
+  offers     Int
+  occupied   Int
+  location   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("courses")
 }

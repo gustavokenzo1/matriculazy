@@ -1,6 +1,8 @@
 export interface IUniversity {
-  name: string;
+  university: string;
   initials: string;
+  courses: object[][];
+  url: string;
 }
 
 export interface UniversitiesRepository {
