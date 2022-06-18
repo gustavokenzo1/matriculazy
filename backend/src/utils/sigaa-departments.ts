@@ -2,13 +2,18 @@ import axios from "axios";
 
 const cheerio = require("cheerio");
 
+export interface IDepartment {
+  name: string;
+  value: number;
+}
+
 export const scrapeDepartments = async (url: string) => {
   const response = await axios.get(url);
   const html = await response.data;
   const $ = cheerio.load(html);
   const departmentsItems = $('select[id="formTurma:inputDepto"]');
 
-  const departments: object[] = [];
+  const departments: IDepartment[] = [];
 
   departmentsItems.each((_: any, el: any) => {
     $(el)

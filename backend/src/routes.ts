@@ -1,6 +1,8 @@
 import express from "express";
+import puppeteer from "puppeteer";
 import { PrismaUniversitiesRepository } from "./repositories/prisma/prisma-universities-repository";
 import { CreateUniversityUseCase } from "./use-cases/create-university-use-case";
+import { scrapeCourses } from "./utils/sigaa-courses";
 import { scrapeDepartments } from "./utils/sigaa-departments";
 
 export const routes = express.Router();
@@ -24,12 +26,20 @@ export const routes = express.Router();
  */
 
 routes.post("/university", async (req, res) => {
-  const departments = await scrapeDepartments(
-    "https://sig.unb.br/sigaa/public/turmas/listar.jsf"
-  );
+  const { university, initials, url } = req.body;
+  const departments = await scrapeDepartments(url);
+
+  const browser = await puppeteer.launch({
+    headless: false,
+  });
+  const context = await browser.createIncognitoBrowserContext();
+  const page = await context.newPage();
+
   for (const deparment of departments) {
-    console.log(deparment);
+    await scrapeCourses(deparment, page, url, initials);
   }
+
+  await browser.close();
 
   return res.status(200).send();
 });
