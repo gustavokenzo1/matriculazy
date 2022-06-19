@@ -22,7 +22,84 @@ export class PrismaUniversitiesRepository implements UniversitiesRepository {
           url,
         },
       });
+
+      for (const course of courses) {
+        for (const classroom of course) {
+          if (classroom) {
+            await prisma.course.create({
+              data: {
+                university: initials,
+                department: (classroom as any).department,
+                code: (classroom as any).code,
+                name: (classroom as any).name,
+                classroom: (classroom as any).classroom,
+                period: (classroom as any).period,
+                teacher: (classroom as any).teacher,
+                schedule: (classroom as any).schedule,
+                offers: parseInt((classroom as any).offers),
+                occupied: parseInt((classroom as any).occupied),
+                location: (classroom as any).location,
+              },
+            });
+          }
+        }
+      }
     }
+  }
+
+  async read(initials: string) {
+    const universityExists = await prisma.university.findFirst({
+      where: {
+        initials: initials,
+      },
+    });
+
+    if (!universityExists) {
+      throw new Error(`University ${initials} does not exist`);
+    }
+
+    const courses = await prisma.course.findMany({
+      where: {
+        university: initials,
+      },
+    });
+
+    return {
+      university: universityExists.name,
+      initials: universityExists.initials,
+      url: universityExists.url,
+      courses: courses,
+    };
+  }
+
+  async readAll() {
+    const universities = await prisma.university.findMany();
+
+    return universities;
+  }
+
+  async update(data: IUniversity) {
+    const { university, initials, courses, url } = data;
+
+    const universityExists = await prisma.university.findFirst({
+      where: {
+        initials: initials,
+      },
+    });
+
+    if (!universityExists) {
+      throw new Error(`University ${initials} does not exist`);
+    }
+
+    await prisma.university.update({
+      where: {
+        id: universityExists.id,
+      },
+      data: {
+        name: university,
+        url,
+      },
+    });
 
     for (const course of courses) {
       for (const classroom of course) {
@@ -40,23 +117,7 @@ export class PrismaUniversitiesRepository implements UniversitiesRepository {
             },
           });
 
-          if (!courseExists) {
-            await prisma.course.create({
-              data: {
-                university: initials,
-                department: (classroom as any).department,
-                code: (classroom as any).code,
-                name: (classroom as any).name,
-                classroom: (classroom as any).classroom,
-                period: (classroom as any).period,
-                teacher: (classroom as any).teacher,
-                schedule: (classroom as any).schedule,
-                offers: parseInt((classroom as any).offers),
-                occupied: parseInt((classroom as any).occupied),
-                location: (classroom as any).location,
-              },
-            });
-          } else {
+          if (courseExists) {
             await prisma.course.update({
               where: {
                 id: courseExists.id,
@@ -74,8 +135,23 @@ export class PrismaUniversitiesRepository implements UniversitiesRepository {
                 location: (classroom as any).location,
               },
             });
+          } else {
+            await prisma.course.create({
+              data: {
+                university: initials,
+                department: (classroom as any).department,
+                code: (classroom as any).code,
+                name: (classroom as any).name,
+                classroom: (classroom as any).classroom,
+                period: (classroom as any).period,
+                teacher: (classroom as any).teacher,
+                schedule: (classroom as any).schedule,
+                offers: parseInt((classroom as any).offers),
+                occupied: parseInt((classroom as any).occupied),
+                location: (classroom as any).location,
+              },
+            });
           }
-          console.log(`${(classroom as any).name} was created`);
         }
       }
     }
