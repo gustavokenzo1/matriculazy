@@ -10,11 +10,15 @@ interface CourseProps {
 interface SelectCoursesSectionProps {
   isLoadingCourses: boolean;
   courses: CourseProps[];
+  selectedCourses: string[];
+  setSelectedCourses: (selectedCourses: string[]) => void;
 }
 
 function SelectCoursesSection({
   isLoadingCourses,
   courses,
+  selectedCourses,
+  setSelectedCourses,
 }: SelectCoursesSectionProps) {
   const [departments, setDepartments] = useState<string[]>([]);
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
@@ -24,7 +28,6 @@ function SelectCoursesSection({
   useEffect(() => {
     if (courses) {
       const deps: string[] = [];
-      const coursesNames: string[] = [];
 
       courses.forEach((course) => {
         if (!deps.includes(course.department)) {
@@ -102,9 +105,17 @@ function SelectCoursesSection({
     }
   }
 
+  function handleSelectCourse(course: string) {
+    if (selectedCourses.includes(course)) {
+      setSelectedCourses(selectedCourses.filter((c) => c !== course));
+    } else {
+      setSelectedCourses([...selectedCourses, course]);
+    }
+  }
+
   return (
-    <>
-      <h1 className="text-4xl text-stone-800 dark:text-stone-200 mt-8 mb-10 font-bold">
+    <div className="flex flex-col items-center">
+      <h1 className="text-6xl text-stone-800 dark:text-stone-200 mt-8 mb-10 font-bold">
         Matérias
       </h1>
       {isLoadingCourses ? (
@@ -112,13 +123,20 @@ function SelectCoursesSection({
           Por favor, aguarde enquanto carregamos as matérias...
         </h1>
       ) : courses.length === 0 ? (
-        <h1 className="text-2xl text-stone-800 mt-8 mb-10">
-          Selecione uma universidade para prosseguir
-        </h1>
+        <>
+          <h1 className="text-2xl text-stone-800 mt-8 mb-10">
+            Selecione uma universidade para prosseguir
+          </h1>
+          <a href="#selectUniversity">
+            <button className="focus:outline-none focus:ring-2 focus:ring-stone-800 focus:ring-offset-2 text-stone-800 dark:text-white px-16 py-2 font-bold border-stone-800 dark:border-stone-200  border-[1px] rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 hover:text-white dark:hover:text-stone-800 transition-all mt-8">
+              Selecionar
+            </button>
+          </a>
+        </>
       ) : (
-        <div className="flex flex-row items-center justify-around h-screen w-full">
-          <div className="flex items-center justify-around h-full w-full">
-            <div className="flex flex-col items-center justify-center h-full w-1/2">
+        <div className="flex flex-col items-center justify-around w-full">
+          <div className="flex items-center justify-around w-full">
+            <div className="flex flex-col items-center justify-center w-1/2">
               <h1 className="text-2xl text-stone-800 dark:text-stone-200 mt-8 mb-10">
                 Departamentos:
               </h1>
@@ -132,7 +150,7 @@ function SelectCoursesSection({
                 placeholder="Filtrar departamento"
                 onChange={handleFilterDepartments}
               />
-              <ul className="w-1/2 h-1/2 pr-4 overflow-y-scroll scrollbar-thin scrollbar-thumb-stone-500 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
+              <ul className="w-3/4 h-[400px] pr-4 overflow-y-scroll scrollbar-thin scrollbar-thumb-stone-500 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
                 {filteredDepartments.map((department) => (
                   <li
                     key={department}
@@ -157,7 +175,7 @@ function SelectCoursesSection({
                 ))}
               </ul>
             </div>
-            <div className="flex flex-col items-center justify-center h-full w-1/2">
+            <div className="flex flex-col items-center justify-center w-1/2">
               <h1 className="text-2xl text-stone-800 dark:text-stone-200 mt-8 mb-10">
                 Cursos:
               </h1>
@@ -170,23 +188,71 @@ function SelectCoursesSection({
                 placeholder="Filtrar curso"
                 onChange={handleFilterCourses}
               />
-              <ul className="w-1/2 h-1/2 pr-4 overflow-y-scroll scrollbar-thin scrollbar-thumb-stone-500 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
+              <ul className="w-3/4 h-[400px] pr-4 overflow-y-scroll scrollbar-thin scrollbar-thumb-stone-500 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
                 {filteredCourses.map((course) => (
                   <li
                     key={course}
                     className="flex flex-col items-start justify-center my-10 border-b-[1px] border-stone-800 dark:border-stone-200"
                   >
-                    <button className="p-2 w-full mb-2 rounded text-start hover:bg-stone-800 hover:text-stone-200 dark:hover:bg-stone-200 dark:hover:text-stone-800 dark:text-stone-200 transition-all">
-                      {course}
-                    </button>
+                    {selectedCourses.includes(course) ? (
+                      <button
+                        className="p-2 w-full mb-2 rounded text-start bg-green-400 text-white hover:bg-stone-800 hover:text-stone-200 dark:hover:bg-stone-200 dark:hover:text-stone-800 dark:text-stone-200 transition-all"
+                        onClick={() => handleSelectCourse(course)}
+                      >
+                        {course}
+                      </button>
+                    ) : (
+                      <button
+                        className="p-2 w-full mb-2 rounded text-start hover:bg-stone-800 hover:text-stone-200 dark:hover:bg-stone-200 dark:hover:text-stone-800 dark:text-stone-200 transition-all"
+                        onClick={() => handleSelectCourse(course)}
+                      >
+                        {course}
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
             </div>
           </div>
+          <div className="w-full flex flex-col items-center mt-20">
+            <h1 className="text-2xl text-stone-800 dark:text-stone-200 mt-8 mb-10">
+              Cursos Selecionados:
+            </h1>
+            <h2 className="text-xl text-stone-800 dark:text-stone-200">
+              Para excluir um curso, basta clicar nele.
+            </h2>
+            {selectedCourses.length > 0 ? (
+              <ul className="w-1/2 flex items-center flex-col justify-center p-8 mt-8 border-2 border-stone-500 rounded overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-stone-400 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
+                {selectedCourses.map((course) => (
+                  <li
+                    key={course}
+                    className="flex flex-col m-4 mt-6 w-full items-start justify-center border-b-[1px] border-stone-800 dark:border-stone-200"
+                  >
+                    <button
+                      className="p-2 w-full mb-2 rounded text-start hover:bg-red-500 hover:text-white dark:bg-stone-200 dark:text-stone-800 transition-all"
+                      onClick={() => handleSelectCourse(course)}
+                    >
+                      {course}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <h2 className="text-xl mt-8 text-stone-800 dark:text-stone-200">
+                Você ainda não selecionou nenhum curso.
+              </h2>
+            )}
+          </div>
         </div>
       )}
-    </>
+      {selectedCourses.length > 0 && (
+        <a href="#selectTeachers">
+          <button className="focus:outline-none focus:ring-2 focus:ring-stone-800 focus:ring-offset-2 text-stone-800 dark:text-white px-16 py-2 font-bold border-stone-800 dark:border-stone-200  border-[1px] rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 hover:text-white dark:hover:text-stone-800 transition-all mt-20">
+            Selecionar professores
+          </button>
+        </a>
+      )}
+    </div>
   );
 }
 

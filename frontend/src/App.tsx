@@ -6,6 +6,7 @@ import CalendarSection from "./sections/CalendarSection";
 import SelectCoursesSection from "./sections/SelectCoursesSection";
 import HomeSection from "./sections/HomeSection";
 import SelectUniversitySection from "./sections/SelectUniversitySection";
+import TeachersSection from "./sections/TeachersSection";
 
 export interface IUniversity {
   id: string;
@@ -18,6 +19,7 @@ function App() {
   const [universities, setUniversities] = useState([]);
   const [courses, setCourses] = useState([]);
   const [isLoadingCourses, setIsLoadingCourses] = useState(false);
+  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
 
   useEffect(() => {
     async function getUniversities() {
@@ -40,7 +42,7 @@ function App() {
   return (
     <div className="font-roboto dark:bg-stone-900 max-w-screen min-h-screen flex flex-col transition-all">
       <DarkModeToggle />
-      <section className="h-screen flex flex-col items-center justify-center">
+      <section id="home" className="h-screen flex flex-col items-center justify-center">
         <HomeSection />
       </section>
       <section
@@ -50,6 +52,7 @@ function App() {
         <SelectUniversitySection
           universities={universities}
           getCourses={getCourses}
+          courses={courses}
         />
       </section>
       <section
@@ -65,6 +68,17 @@ function App() {
         <SelectCoursesSection
           courses={courses}
           isLoadingCourses={isLoadingCourses}
+          selectedCourses={selectedCourses}
+          setSelectedCourses={setSelectedCourses}
+        />
+      </section>
+      <section
+        id="selectTeachers"
+        className="min-h-screen flex flex-col justify-center items-center p-24"
+      >
+        <TeachersSection
+          selectedCourses={selectedCourses}
+          courses={courses}
         />
       </section>
     </div>
