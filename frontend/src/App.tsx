@@ -6,7 +6,8 @@ import CalendarSection from "./sections/CalendarSection";
 import SelectCoursesSection from "./sections/SelectCoursesSection";
 import HomeSection from "./sections/HomeSection";
 import SelectUniversitySection from "./sections/SelectUniversitySection";
-import TeachersSection from "./sections/TeachersSection";
+import TeachersSection, { ICourse } from "./sections/TeachersSection";
+import SummarySection from "./sections/SummarySection";
 
 export interface IUniversity {
   id: string;
@@ -20,6 +21,8 @@ function App() {
   const [courses, setCourses] = useState([]);
   const [isLoadingCourses, setIsLoadingCourses] = useState(false);
   const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+  const [fixedCourses, setFixedCourses] = useState<ICourse[]>([]);
+  const [occupied, setOccupied] = useState<String[]>([]);
 
   useEffect(() => {
     async function getUniversities() {
@@ -42,7 +45,10 @@ function App() {
   return (
     <div className="font-roboto dark:bg-stone-900 max-w-screen min-h-screen flex flex-col transition-all">
       <DarkModeToggle />
-      <section id="home" className="h-screen flex flex-col items-center justify-center">
+      <section
+        id="home"
+        className="h-screen flex flex-col items-center justify-center"
+      >
         <HomeSection />
       </section>
       <section
@@ -59,7 +65,7 @@ function App() {
         id="selectOccupied"
         className="min-h-screen flex flex-col justify-center items-center p-24"
       >
-        <CalendarSection />
+        <CalendarSection occupied={occupied} setOccupied={setOccupied} />
       </section>
       <section
         id="selectCourses"
@@ -79,6 +85,18 @@ function App() {
         <TeachersSection
           selectedCourses={selectedCourses}
           courses={courses}
+          fixedCourses={fixedCourses}
+          setFixedCourses={setFixedCourses}
+        />
+      </section>
+      <section
+        id="summary"
+        className="min-h-screen flex flex-col justify-center items-center p-24"
+      >
+        <SummarySection
+          occupied={occupied}
+          selectedCourses={selectedCourses}
+          fixedCourses={fixedCourses}
         />
       </section>
     </div>

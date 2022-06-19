@@ -196,7 +196,7 @@ function SelectCoursesSection({
                   >
                     {selectedCourses.includes(course) ? (
                       <button
-                        className="p-2 w-full mb-2 rounded text-start bg-green-400 text-white hover:bg-stone-800 hover:text-stone-200 dark:hover:bg-stone-200 dark:hover:text-stone-800 dark:text-stone-200 transition-all"
+                        className="p-2 w-full mb-2 rounded text-start bg-green-400 text-white dark:text-stone-800 hover:bg-stone-800 hover:text-stone-200 dark:hover:bg-stone-200 dark:hover:text-stone-800 transition-all"
                         onClick={() => handleSelectCourse(course)}
                       >
                         {course}
@@ -229,7 +229,7 @@ function SelectCoursesSection({
                     className="flex flex-col m-4 mt-6 w-full items-start justify-center border-b-[1px] border-stone-800 dark:border-stone-200"
                   >
                     <button
-                      className="p-2 w-full mb-2 rounded text-start hover:bg-red-500 hover:text-white dark:bg-stone-200 dark:text-stone-800 transition-all"
+                      className="p-2 w-full mb-2 rounded text-start hover:bg-red-500 hover:text-white dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-red-500 transition-all"
                       onClick={() => handleSelectCourse(course)}
                     >
                       {course}

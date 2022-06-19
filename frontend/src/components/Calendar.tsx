@@ -1,4 +1,5 @@
 import { Dispatch, useState } from "react";
+import { CalendarSectionProps } from "../sections/CalendarSection";
 
 const days: String[] = [
   "",
@@ -74,9 +75,7 @@ function Day({ index, hour, setOccupied, occupied }: IDay) {
   );
 }
 
-function Calendar() {
-  const [occupied, setOccupied] = useState<String[]>([]);
-
+function Calendar({ occupied, setOccupied }: CalendarSectionProps) {
   return (
     <div className="flex">
       <table className="border-collapse table-auto w-full text-sm">

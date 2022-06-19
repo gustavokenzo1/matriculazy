@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IUniversity } from "../App";
 
 interface SecondSectionProps {
@@ -15,6 +15,13 @@ function SelectUniversitySection({
   courses,
 }: SecondSectionProps) {
   const [selectedUniversity, setSelectedUniversity] = useState<IUniversity>();
+  const [updatedAt, setUpdatedAt] = useState<string>("");
+
+  useEffect(() => {
+    if (courses.length > 0) {
+      setUpdatedAt(new Date(courses[0].updatedAt).toLocaleString("pt-BR"));
+    }
+  }, [courses]);
 
   return (
     <>
@@ -65,16 +72,18 @@ function SelectUniversitySection({
               {selectedUniversity.url}
             </a>
             <h2 className="text-xl my-4 text-stone-800 dark:text-stone-200">
-              Última coleta de dados:{" "}
-              {new Date(courses[0].updatedAt).toLocaleDateString()}
+              Última coleta de dados: {updatedAt}
             </h2>
           </div>
         )}
-        <a href="#selectOccupied">
-          <button className="focus:outline-none focus:ring-2 focus:ring-stone-800 focus:ring-offset-2 text-stone-800 dark:text-white px-16 py-2 font-bold border-stone-800 dark:border-stone-200  border-[1px] rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 hover:text-white dark:hover:text-stone-800 transition-all mt-8">
-            Próximo
-          </button>
-        </a>
+        <button
+          className="focus:outline-none focus:ring-2 focus:ring-stone-800 focus:ring-offset-2 text-stone-800 dark:text-white px-16 py-2 font-bold border-stone-800 dark:border-stone-200  border-[1px] rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 hover:text-white dark:hover:text-stone-800 transition-all mt-8"
+          onClick={() => {
+            window.location.href = "#selectOccupied";
+          }}
+        >
+          Próximo
+        </button>
       </div>
     </>
   );
