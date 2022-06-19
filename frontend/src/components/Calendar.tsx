@@ -51,8 +51,8 @@ function Day({ index, hour, setOccupied, occupied }: IDay) {
     setOccupied(newOccupied);
   };
   return (
-    <tr key={index}>
-      <td className="border-b border-slate-200 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+    <tr key={`${hour}`}>
+      <td className="border-b border-slate-200 dark:border-slate-700 p-4 pl-8 text-slate-800  dark:text-slate-200">
         {hour}
       </td>
       {Array(7)
@@ -60,7 +60,7 @@ function Day({ index, hour, setOccupied, occupied }: IDay) {
         .map((_, index) => (
           <td
             className="border-b text-center border-slate-200 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
-            key={index}
+            key={`${days[index + 1]} às ${hour}`}
           >
             <input
               onChange={handleOccupied}
@@ -84,8 +84,8 @@ function Calendar() {
           <tr>
             {days.map((day, index) => (
               <th
-                className="border-b border-orange-400 font-medium p-4 pl-8 pt-0 pb-3 text-orange-400 dark:text-white text-left"
-                key={index}
+                className="border-b border-stone-800 dark:border-stone-200 font-medium p-4 pl-8 pt-0 pb-3 text-stone-800 dark:text-white text-left"
+                key={`${day}`}
               >
                 {day}
               </th>
@@ -99,6 +99,7 @@ function Calendar() {
               hour={hour}
               setOccupied={setOccupied}
               occupied={occupied}
+              key={`${hour}`}
             />
           ))}
         </tbody>

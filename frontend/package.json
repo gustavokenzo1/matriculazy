@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "framer-motion": "^6.3.11",
     "phosphor-icons": "^1.4.2",
     "phosphor-react": "^1.4.1",

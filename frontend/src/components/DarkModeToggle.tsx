@@ -20,12 +20,12 @@ export default function DarkModeToggle() {
   }
 
   return (
-    <div className="fixed z-20 top-4 right-4 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2">
+    <div className="fixed z-20 top-4 right-4 focus:outline-none focus:ring-2 focus:ring-stone-800 focus:ring-offset-2">
       {colorTheme === "light" ? (
         <motion.button
           onClick={handleDarkModeToggle}
           whileHover={{ scale: 1.1, rotate: 180 }}
-          className="focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 rounded-full text-white"
+          className="focus:outline-none focus:ring-2 focus:ring-stone-800 focus:ring-offset-2 rounded-full text-white"
         >
           <Sun size={32} />
         </motion.button>
@@ -33,7 +33,7 @@ export default function DarkModeToggle() {
         <motion.button
           onClick={handleDarkModeToggle}
           whileHover={{ scale: 1.1, rotate: 270 }}
-          className="focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 rounded-full"
+          className="focus:outline-none focus:ring-2 focus:ring-stone-800 focus:ring-offset-2 rounded-full"
         >
           <Moon size={32} />
         </motion.button>
