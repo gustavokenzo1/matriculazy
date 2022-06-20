@@ -97,6 +97,7 @@ function App() {
           occupied={occupied}
           selectedCourses={selectedCourses}
           fixedCourses={fixedCourses}
+          courses={courses}
         />
       </section>
     </div>

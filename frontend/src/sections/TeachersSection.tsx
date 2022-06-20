@@ -7,6 +7,7 @@ export interface ICourse {
   teacher: string;
   location: string;
   schedule: string[];
+  simplifiedSchedule: string[][];
   updatedAt: string;
 }
 
