@@ -26,6 +26,10 @@ export class PrismaUniversitiesRepository implements UniversitiesRepository {
       for (const course of courses) {
         for (const classroom of course) {
           if (classroom) {
+            if (isNaN((classroom as any).offers)) (classroom as any).offers = 0;
+            if (isNaN((classroom as any).occupied))
+              (classroom as any).occupied = 0;
+
             await prisma.course.create({
               data: {
                 university: initials,
@@ -104,6 +108,10 @@ export class PrismaUniversitiesRepository implements UniversitiesRepository {
     for (const course of courses) {
       for (const classroom of course) {
         if (classroom) {
+          if (isNaN((classroom as any).offers)) (classroom as any).offers = 0;
+          if (isNaN((classroom as any).occupied))
+            (classroom as any).occupied = 0;
+
           const courseExists = await prisma.course.findFirst({
             where: {
               university: initials,
@@ -155,5 +163,29 @@ export class PrismaUniversitiesRepository implements UniversitiesRepository {
         }
       }
     }
+  }
+
+  async delete(initials: string) {
+    const universityExists = await prisma.university.findFirst({
+      where: {
+        initials: initials,
+      },
+    });
+
+    if (!universityExists) {
+      throw new Error(`University ${initials} does not exist`);
+    }
+
+    await prisma.university.delete({
+      where: {
+        id: universityExists.id,
+      },
+    });
+
+    await prisma.course.deleteMany({
+      where: {
+        university: initials,
+      },
+    });
   }
 }

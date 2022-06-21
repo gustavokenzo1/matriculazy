@@ -2,6 +2,7 @@ import express from "express";
 import puppeteer from "puppeteer";
 import { PrismaUniversitiesRepository } from "./repositories/prisma/prisma-universities-repository";
 import { CreateUniversityUseCase } from "./use-cases/create-university-use-case";
+import { DeleteUniversityUseCase } from "./use-cases/delete-university-use-case";
 import { ReadAllUniversitiesUseCase } from "./use-cases/read-all-universities-use-case";
 import { ReadUniversityUseCase } from "./use-cases/read-university-use-case";
 import { UpdateUniversityUseCase } from "./use-cases/update-university-use-case";
@@ -31,10 +32,6 @@ routes.post("/university", async (req, res) => {
     const course = await scrapeCourses(department, page, url, initials);
     if (course.length > 0) {
       courses.push(course);
-    }
-    // For testing purposes
-    if (courses.length === 5) {
-      break;
     }
   }
   await browser.close();
@@ -93,14 +90,23 @@ routes.patch("/university", async (req, res) => {
     if (course.length > 0) {
       courses.push(course);
     }
-    // For testing purposes
-    if (courses.length === 5) {
-      break;
-    }
   }
   await browser.close();
 
   await updateUniversityUseCase.execute({ university, initials, courses, url });
+
+  return res.status(200).send();
+});
+
+routes.delete("/university/", async (req, res) => {
+  const { initials } = req.body;
+
+  const prismaUniversitiesRepository = new PrismaUniversitiesRepository();
+  const deleteUniversityUseCase = new DeleteUniversityUseCase(
+    prismaUniversitiesRepository
+  );
+
+  await deleteUniversityUseCase.execute({ initials });
 
   return res.status(200).send();
 });

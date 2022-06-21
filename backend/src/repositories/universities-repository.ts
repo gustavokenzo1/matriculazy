@@ -10,4 +10,5 @@ export interface UniversitiesRepository {
   read: (initials: string) => Promise<object>;
   readAll: () => Promise<object[]>;
   update: (data: IUniversity) => Promise<void>;
+  delete: (initials: string) => Promise<void>;
 }
