@@ -53,7 +53,7 @@ function App() {
       </section>
       <section
         id="selectUniversity"
-        className="h-screen flex flex-row justify-around p-16"
+        className="h-screen flex flex-col md:justify-around justify-center md:gap-0 gap-10 p-8 lg:flex-row sm:p-16"
       >
         <SelectUniversitySection
           universities={universities}

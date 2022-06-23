@@ -8,10 +8,10 @@ export interface CalendarSectionProps {
 function CalendarSection({ occupied, setOccupied }: CalendarSectionProps) {
   return (
     <>
-      <h1 className="text-5xl text-stone-800 dark:text-stone-200 mt-8 mb-10 font-bold">
+      <h1 className="text-xl sm:text-3xl md:text-5xl text-stone-800 dark:text-stone-200 mt-8 mb-10 font-bold">
         Horários Ocupados
       </h1>
-      <h2 className="text-xl dark:text-white mb-12">
+      <h2 className="text-md sm:text-xl md:text-2xl dark:text-white mb-12 text-center">
         Selecione os horários em que você possui compromissos, como aulas de
         cursos externos, estágio, trabalho, etc.
       </h2>

@@ -47,15 +47,15 @@ function TeachersSection({
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-6xl text-stone-800 dark:text-stone-200 mt-8 mb-10 font-bold">
+      <h1 className="text-xl sm:text-3xl md:text-6xl text-center text-stone-800 dark:text-stone-200 mt-8 mb-10 font-bold">
         Selecione Professores(as)
       </h1>
-      <h2 className="text-xl text-stone-800 dark:text-stone-200">
+      <h2 className="text-md sm:text-lg md:text-xl text-center text-stone-800 dark:text-stone-200">
         Caso você já possua preferência por um professor ou por um horário, você
         pode selecionar logo abaixo (caso não tenha, você pode pular essa
         etapa):
       </h2>
-      <ul className="mt-10 grid grid-cols-2 gap-4">
+      <ul className="mt-10 md:grid md:grid-cols-2 gap-4">
         {selectedCourses.map((course) => (
           <li key={course} className="mt-12">
             <strong className="text-2xl dark:text-stone-200">{course}</strong>

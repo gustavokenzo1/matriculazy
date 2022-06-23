@@ -3,7 +3,6 @@ import { CalendarSectionProps } from "../sections/CalendarSection";
 
 const days: String[] = [
   "",
-  "Domingo",
   "Segunda-feira",
   "Terça-feira",
   "Quarta-feira",
@@ -53,20 +52,20 @@ function Day({ index, hour, setOccupied, occupied }: IDay) {
   };
   return (
     <tr key={`${hour}`}>
-      <td className="border-b border-slate-200 dark:border-slate-700 p-4 pl-8 text-slate-800  dark:text-slate-200">
+      <td className="border-b border-slate-200 dark:border-slate-700 p-2 md:p-4 pl-4 md:pl-8 text-slate-800  dark:text-slate-200">
         {hour}
       </td>
-      {Array(7)
+      {Array(6)
         .fill(0)
         .map((_, index) => (
           <td
-            className="border-b text-center border-slate-200 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
+            className="border-b text-center border-slate-200 dark:border-slate-700 p-2 md:p-4 pl-6 md:pl-8 text-slate-500 dark:text-slate-400"
             key={`${days[index + 1]} às ${hour}`}
           >
             <input
               onChange={handleOccupied}
               type="checkbox"
-              className="w-8 h-8 cursor-pointer"
+              className="w-4 h-4 md:w-8 md:h-8 cursor-pointer"
               value={`${days[index + 1]} às ${hour}`}
             />
           </td>
@@ -77,13 +76,13 @@ function Day({ index, hour, setOccupied, occupied }: IDay) {
 
 function Calendar({ occupied, setOccupied }: CalendarSectionProps) {
   return (
-    <div className="flex">
-      <table className="border-collapse table-auto w-full text-sm">
+    <div className="flex items-center justify-center">
+      <table className="border-collapse table-auto w-full text-xs md:text-sm">
         <thead>
           <tr>
             {days.map((day, index) => (
               <th
-                className="border-b border-stone-800 dark:border-stone-200 font-medium p-4 pl-8 pt-0 pb-3 text-stone-800 dark:text-white text-left"
+                className="border-b border-stone-800 dark:border-stone-200 font-medium p-0 md:p-4 pl-2 md:pl-8 pt-0 pb-0 md:pb-3 text-stone-800 dark:text-white text-left"
                 key={`${day}`}
               >
                 {day}

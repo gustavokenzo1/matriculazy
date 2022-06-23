@@ -114,47 +114,47 @@ function SelectCoursesSection({
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="text-6xl text-stone-800 dark:text-stone-200 mt-8 mb-10 font-bold">
+    <>
+      <h1 className="text-xl sm:text-3xl md:text-6xl text-stone-800 dark:text-stone-200 mt-8 mb-10 font-bold">
         Matérias
       </h1>
       {isLoadingCourses ? (
-        <h1 className="text-2xl text-stone-800 mt-8 mb-10">
+        <h1 className="text-md sm:text-xl md:text-2xl text-center text-stone-800 mt-8 mb-10">
           Por favor, aguarde enquanto carregamos as matérias...
         </h1>
       ) : courses.length === 0 ? (
         <>
-          <h1 className="text-2xl text-stone-800 mt-8 mb-10">
+          <h1 className="text-md sm:text-xl md:text-2xl text-center text-stone-800 mt-8 mb-10">
             Selecione uma universidade para prosseguir
           </h1>
           <a href="#selectUniversity">
-            <button className="focus:outline-none focus:ring-2 focus:ring-stone-800 focus:ring-offset-2 text-stone-800 dark:text-white px-16 py-2 font-bold border-stone-800 dark:border-stone-200  border-[1px] rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 hover:text-white dark:hover:text-stone-800 transition-all mt-8">
+            <button className="focus:outline-none focus:ring-2 focus:ring-stone-800 focus:ring-offset-2 text-stone-800 dark:text-white px-16 py-2 font-bold border-stone-800 dark:border-stone-200  border rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 hover:text-white dark:hover:text-stone-800 transition-all">
               Selecionar
             </button>
           </a>
         </>
       ) : (
-        <div className="flex flex-col items-center justify-around w-full">
-          <div className="flex items-center justify-around w-full">
+        <div className="flex flex-col items-center justify-around">
+          <div className="flex xl:flex-row flex-col items-center justify-around">
             <div className="flex flex-col items-center justify-center w-1/2">
               <h1 className="text-2xl text-stone-800 dark:text-stone-200 mt-8 mb-10">
                 Departamentos:
               </h1>
-              <h2 className="text-xl text-stone-800 dark:text-stone-200">
+              <h2 className="text-xl text-center text-stone-800 dark:text-stone-200">
                 Selecione um departamento para filtrar os cursos desse
                 departamento (opcional):
               </h2>
               <input
                 type="text"
-                className="m-8 border-[1px] border-stone-800 dark:bg-stone-900 dark:border-stone-200 w-1/2 py-2 px-4 rounded"
+                className="m-8 border border-stone-800 dark:bg-stone-900 dark:border-stone-200 w-full lg:w-1/2 py-2 px-4 rounded"
                 placeholder="Filtrar departamento"
                 onChange={handleFilterDepartments}
               />
-              <ul className="w-3/4 h-[400px] pr-4 overflow-y-scroll scrollbar-thin scrollbar-thumb-stone-500 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
+              <ul className="w-[300px] sm:w-[400px] lg:w-[600px] h-[400px] pr-4 overflow-y-scroll scrollbar-thin scrollbar-thumb-stone-500 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
                 {filteredDepartments.map((department) => (
                   <li
                     key={department}
-                    className="flex flex-col items-start justify-center my-10 border-b-[1px] border-stone-800 dark:border-stone-200"
+                    className="flex flex-col items-start justify-center my-10 border-b border-stone-800 dark:border-stone-200"
                   >
                     {selectedDepartment === department ? (
                       <button
@@ -179,20 +179,20 @@ function SelectCoursesSection({
               <h1 className="text-2xl text-stone-800 dark:text-stone-200 mt-8 mb-10">
                 Cursos:
               </h1>
-              <h2 className="text-xl text-stone-800 dark:text-stone-200">
-                Selecione os cursos que deseja fazer
+              <h2 className="text-xl text-center text-stone-800 dark:text-stone-200">
+                Selecione os cursos que deseja fazer:
               </h2>
               <input
                 type="text"
-                className="m-8 border-[1px] border-stone-800 dark:bg-stone-900 dark:border-stone-200 w-1/2 py-2 px-4 rounded"
+                className="m-8 border border-stone-800 dark:bg-stone-900 dark:border-stone-200 w-full lg:w-1/2 py-2 px-4 rounded"
                 placeholder="Filtrar curso"
                 onChange={handleFilterCourses}
               />
-              <ul className="w-3/4 h-[400px] pr-4 overflow-y-scroll scrollbar-thin scrollbar-thumb-stone-500 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
+              <ul className="w-[300px] sm:w-[400px] lg:w-[600px] h-[400px] pr-4 overflow-y-scroll scrollbar-thin scrollbar-thumb-stone-500 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
                 {filteredCourses.map((course) => (
                   <li
                     key={course}
-                    className="flex flex-col items-start justify-center my-10 border-b-[1px] border-stone-800 dark:border-stone-200"
+                    className="flex flex-col items-start justify-center my-10 border-b border-stone-800 dark:border-stone-200"
                   >
                     {selectedCourses.includes(course) ? (
                       <button
@@ -215,14 +215,14 @@ function SelectCoursesSection({
             </div>
           </div>
           <div className="w-full flex flex-col items-center mt-20">
-            <h1 className="text-2xl text-stone-800 dark:text-stone-200 mt-8 mb-10">
+            <h1 className="text-2xl text-center text-stone-800 dark:text-stone-200 mt-8 mb-10">
               Cursos Selecionados:
             </h1>
-            <h2 className="text-xl text-stone-800 dark:text-stone-200">
+            <h2 className="text-xl text-center text-stone-800 dark:text-stone-200">
               Para excluir um curso, basta clicar nele.
             </h2>
             {selectedCourses.length > 0 ? (
-              <ul className="w-1/2 flex items-center flex-col justify-center p-8 mt-8 border-2 border-stone-500 rounded overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-stone-400 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
+              <ul className="w-[300px] sm:w-[400px] lg:w-[600px] flex items-center flex-col justify-center p-2 sm:p-8 mt-8 border-2 border-stone-500 rounded overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-stone-400 scrollbar-track-stone-200 scrollbar-thumb-rounded-md">
                 {selectedCourses.map((course) => (
                   <li
                     key={course}
@@ -238,7 +238,7 @@ function SelectCoursesSection({
                 ))}
               </ul>
             ) : (
-              <h2 className="text-xl mt-8 text-stone-800 dark:text-stone-200">
+              <h2 className="text-xl text-center mt-8 text-stone-800 dark:text-stone-200">
                 Você ainda não selecionou nenhum curso.
               </h2>
             )}
@@ -252,7 +252,7 @@ function SelectCoursesSection({
           </button>
         </a>
       )}
-    </div>
+    </>
   );
 }
 
