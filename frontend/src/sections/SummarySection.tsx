@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ICourse } from "./TeachersSection";
 
 interface SummaryProps {
@@ -14,6 +15,8 @@ function SummarySection({
   selectedCourses,
   courses,
 }: SummaryProps) {
+  const navigate = useNavigate();
+
   function simplifySchedule(schedule: string[]) {
     return schedule.map((day) => {
       const daySchedule = day.split("às");
@@ -100,7 +103,16 @@ function SummarySection({
     // 7: Remover undefined
     const finalResults = results.filter((timetable) => timetable !== undefined);
 
-    console.log(finalResults);
+    // Arrumar redirecionamento
+    if (finalResults.length > 0) {
+      return (
+        <>
+          <Link to="/result" state={{ timetables: finalResults }}>
+            <button>Ver resultados</button>
+          </Link>
+        </>
+      );
+    }
   }
 
   return (
