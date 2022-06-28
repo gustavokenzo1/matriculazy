@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ICourse } from "./TeachersSection";
 
@@ -16,6 +16,7 @@ function SummarySection({
   courses,
 }: SummaryProps) {
   const navigate = useNavigate();
+  const [results, setResults] = useState<ICourse[]>([]);
 
   function simplifySchedule(schedule: string[]) {
     return schedule.map((day) => {
@@ -102,17 +103,18 @@ function SummarySection({
 
     // 7: Remover undefined
     const finalResults = results.filter((timetable) => timetable !== undefined);
+    setResults([...new Set(finalResults)]);
 
     // Arrumar redirecionamento
-    if (finalResults.length > 0) {
-      return (
-        <>
-          <Link to="/result" state={{ timetables: finalResults }}>
-            <button>Ver resultados</button>
-          </Link>
-        </>
-      );
-    }
+    // if (finalResults.length > 0) {
+    //   return (
+    //     <>
+    //       <Link to="/result" state={{ timetables: finalResults }}>
+    //         <button>Ver resultados</button>
+    //       </Link>
+    //     </>
+    //   );
+    // }
   }
 
   return (
@@ -140,7 +142,9 @@ function SummarySection({
       {selectedCourses.length !== 0 ? (
         <ul className="text-xl text-stone-800 dark:text-stone-200 mt-4">
           {selectedCourses.map((s) => (
-            <li className="mt-2">{s}</li>
+            <li className="mt-2" key={s}>
+              {s}
+            </li>
           ))}
         </ul>
       ) : (
@@ -154,7 +158,7 @@ function SummarySection({
       {fixedCourses.length !== 0 ? (
         <ul className="text-xl text-stone-800 dark:text-stone-200 mt-4">
           {fixedCourses.map((f) => (
-            <li className="mt-2">{f.name}</li>
+            <li className="mt-2" key={f.id}>{f.name}</li>
           ))}
         </ul>
       ) : (
@@ -168,6 +172,13 @@ function SummarySection({
       >
         GERAR GRADE HORÁRIA
       </button>
+      {results.length !== 0 && (
+        <Link to="/result" state={{ timetables: results }}>
+          <button className="focus:outline-none self-center focus:ring-2 focus:ring-stone-800 focus:ring-offset-2 text-stone-800 dark:text-white px-28 py-2 font-bold border-stone-800 dark:border-stone-200  border-[1px] rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 hover:text-white dark:hover:text-stone-800 transition-all mt-16">
+            Ver resultados
+          </button>
+        </Link>
+      )}
     </div>
   );
 }

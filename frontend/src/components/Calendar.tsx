@@ -1,7 +1,7 @@
 import { Dispatch, useState } from "react";
 import { CalendarSectionProps } from "../sections/CalendarSection";
 
-const days: String[] = [
+export const days: String[] = [
   "",
   "Segunda-feira",
   "Terça-feira",
@@ -10,7 +10,7 @@ const days: String[] = [
   "Sexta-feira",
   "Sábado",
 ];
-const hours: String[] = [
+export const hours: String[] = [
   "07:00",
   "08:00",
   "09:00",
