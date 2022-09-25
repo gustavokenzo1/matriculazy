@@ -1,3 +1,4 @@
+import { Department } from "@prisma/client";
 import { Cluster } from "puppeteer-cluster";
 
 interface IDepartment {
@@ -16,7 +17,7 @@ interface ICourse {
   schedule: string[];
 }
 
-export async function getCourses(departments: IDepartment[], url: string) {
+export async function getCourses(departments: Department[], url: string) {
   console.log("Achou " + departments.length + " departamentos");
   const courses: ICourse[] = [];
 

@@ -8,6 +8,8 @@ CREATE TABLE "courses" (
     "classroom" TEXT NOT NULL,
     "location" TEXT NOT NULL,
     "schedule" TEXT[],
+    "department" TEXT NOT NULL,
+    "university" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "departmentId" TEXT,
@@ -31,7 +33,6 @@ CREATE TABLE "departments" (
 CREATE TABLE "universities" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "url" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

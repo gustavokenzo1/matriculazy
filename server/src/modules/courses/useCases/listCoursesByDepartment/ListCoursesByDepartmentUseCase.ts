@@ -1,18 +1,13 @@
 import { ICoursesRepository } from "../../repositories/ICoursesRepository";
 import { PrismaCoursesRepository } from "../../repositories/prisma/PrismaCoursesRepository";
 
-interface IRequest {
-  url: string;
-  university: string;
-}
-
-export class CreateCoursesUseCase {
+export class ListCoursesByDepartmentUseCase {
   constructor(
     private coursesRepository: ICoursesRepository = new PrismaCoursesRepository()
   ) { }
 
-  async execute({ url, university }: IRequest) {
-    const courses = await this.coursesRepository.create({ url, university });
+  async execute(department: string, university: string) {
+    const courses = await this.coursesRepository.findByDeparment(department, university);
 
     return courses;
   }

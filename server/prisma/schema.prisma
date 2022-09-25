@@ -13,18 +13,49 @@ datasource db {
 model Course {
   id String @id @default(uuid())
 
-  name       String
-  code       String
-  semester   String
-  teacher    String
-  classroom  String
-  location   String
-  schedule   String[]
-  department String
-  university String
+  name      String
+  code      String
+  semester  String
+  teacher   String
+  classroom String
+  location  String
+  schedule  String[]
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  Department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId String?
+  University   University? @relation(fields: [universityId], references: [id])
+  universityId String?
+
+  @@map("courses")
+}
+
+model Department {
+  id String @id @default(uuid())
+
+  name    String
+  value   String
+  courses Course[]
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  University   University? @relation(fields: [universityId], references: [id])
+  universityId String?
+
+  @@map("departments")
+}
+
+model University {
+  id String @id @default(uuid())
+
+  name        String
+  url         String
+  departments Department[]
+  courses     Course[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("courses")
+  @@map("universities")
 }
