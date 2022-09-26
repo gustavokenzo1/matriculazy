@@ -129,8 +129,15 @@ export async function getCourses(departments: Department[], url: string) {
             start = `${start.split(':')[0]}:00`;
             end = `${end.split(':')[0]}:00`;
 
-            simplifiedSchedule.push(`${day} ${start}`);
-            simplifiedSchedule.push(`${day} ${end}`);
+            const hoursBetween = [];
+
+            for (let i = parseInt(start.split(':')[0]); i <= parseInt(end.split(':')[0]); i++) {
+              hoursBetween.push(`${i}:00`);
+            }
+
+            hoursBetween.forEach(hour => {
+              simplifiedSchedule.push(`${day} ${hour}`);
+            });
           })
 
           course.simplifiedSchedule = simplifiedSchedule;

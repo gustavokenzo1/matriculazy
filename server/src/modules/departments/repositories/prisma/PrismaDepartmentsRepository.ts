@@ -1,3 +1,4 @@
+import { Department } from "@prisma/client";
 import { prisma } from "../../../../prisma";
 import { getDepartments } from "../../../../utils/getDepartments";
 import { ICreateDepartmentsDTO } from "../../dtos/ICreateDepartmentsDTO";
@@ -22,5 +23,17 @@ export class PrismaDepartmentsRepository implements IDepartmentsRepository {
         value: department.value
       })),
     })
+  }
+
+  async read(university: string): Promise<Department[]> {
+    const departments = await prisma.department.findMany({
+      where: {
+        University: {
+          name: university
+        }
+      }
+    })
+
+    return departments
   }
 }

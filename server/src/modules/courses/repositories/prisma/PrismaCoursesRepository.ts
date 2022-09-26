@@ -103,25 +103,7 @@ export class PrismaCoursesRepository implements ICoursesRepository {
   }
 
   makeTimetable(courses: Course[]): Promise<Course[][]> {
-    // courses.forEach(course => {
-    //   const simplifiedSchedule: string[] = [];
-
-    //   course.schedule.forEach(schedule => {
-    //     const day = schedule.split(' ')[0];
-    //     let start = schedule.split(' ')[1];
-    //     let end = schedule.split(' ')[3];
-
-    //     start = `${start.split(':')[0]}:00`;
-    //     end = `${end.split(':')[0]}:00`;
-
-    //     simplifiedSchedule.push(`${day} ${start}`);
-    //     simplifiedSchedule.push(`${day} ${end}`);
-    //   })
-
-    //   course.schedule = simplifiedSchedule;
-    // })
-
-    const coursesBySubject = courses.reduce((acc, course) => {
+    const coursesBySubject = Object.values(courses.reduce((acc, course) => {
       if (acc[course.name]) {
         acc[course.name].push(course);
       } else {
@@ -129,7 +111,7 @@ export class PrismaCoursesRepository implements ICoursesRepository {
       }
 
       return acc;
-    }, {} as Record<string, Course[]>);
+    }, {} as Record<string, Course[]>))
 
     const days = [
       "Segunda-feira",
@@ -158,8 +140,37 @@ export class PrismaCoursesRepository implements ICoursesRepository {
       "22:00",
       "23:00",
     ]
-    console.log(coursesBySubject);
 
-    return Promise.resolve(Object.values(coursesBySubject));
+    function recursion(args: Array<Array<object>>) {
+      let onePossibleSchedule: any[] = [];
+      let max = args.length - 1;
+
+      function helper(arr: Array<object>, i: number) {
+        if (args[i]) {
+          for (let j = 0; j < args[i].length; j++) {
+            let array_copy = arr.slice(0);
+            array_copy.push(args[i][j]);
+            if (i == max) onePossibleSchedule.push(array_copy);
+            else helper(array_copy, i + 1);
+          }
+        }
+      }
+      helper([], 0);
+      return onePossibleSchedule;
+    }
+
+    const allPossibleSchedules = recursion(coursesBySubject);
+
+    const uniqueSchedules = allPossibleSchedules.filter((courses) => {
+      const allSchedules: string[] = []
+
+      courses.forEach((course: Course) => allSchedules.push(...course.simplifiedSchedule));
+
+      const uniqueSchedules = [...new Set(allSchedules)];
+
+      return uniqueSchedules.length === allSchedules.length;
+    })
+
+    return Promise.resolve(uniqueSchedules);
   }
 }
