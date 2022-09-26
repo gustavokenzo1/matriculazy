@@ -13,13 +13,14 @@ datasource db {
 model Course {
   id String @id @default(uuid())
 
-  name      String
-  code      String
-  semester  String
-  teacher   String
-  classroom String
-  location  String
-  schedule  String[]
+  name               String
+  code               String
+  semester           String
+  teacher            String
+  classroom          String
+  location           String
+  schedule           String[]
+  simplifiedSchedule String[]
 
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt

@@ -1,3 +1,4 @@
+import { AppError } from "../../../../shared/errors/AppError";
 import { IUniversitiesRepository } from "../../repositories/IUniversitiesRepository";
 import { PrismaUniversitiesRepository } from "../../repositories/prisma/PrismaUniversitiesRepository";
 
@@ -12,7 +13,13 @@ export class CreateUniversityUseCase {
   ) { }
 
   async execute({ university, url }: IRequest) { 
-    const createdUniversity = this.universitiesRepository.create(university, url)
+    const universityExists = await this.universitiesRepository.find(university)
+
+    if (universityExists) {
+      throw new AppError("Universidade já existe")
+    }
+
+    const createdUniversity = await this.universitiesRepository.create(university, url)
 
     return createdUniversity
   }

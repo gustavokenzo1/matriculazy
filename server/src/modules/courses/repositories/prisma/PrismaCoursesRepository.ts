@@ -42,6 +42,7 @@ export class PrismaCoursesRepository implements ICoursesRepository {
             semester: course.semester,
             departmentId: createdDepartment!.id,
             universityId: createdUniversity!.id,
+            simplifiedSchedule: course.simplifiedSchedule,
           },
         });
       }
@@ -99,5 +100,66 @@ export class PrismaCoursesRepository implements ICoursesRepository {
         name: university
       }
     });
+  }
+
+  makeTimetable(courses: Course[]): Promise<Course[][]> {
+    // courses.forEach(course => {
+    //   const simplifiedSchedule: string[] = [];
+
+    //   course.schedule.forEach(schedule => {
+    //     const day = schedule.split(' ')[0];
+    //     let start = schedule.split(' ')[1];
+    //     let end = schedule.split(' ')[3];
+
+    //     start = `${start.split(':')[0]}:00`;
+    //     end = `${end.split(':')[0]}:00`;
+
+    //     simplifiedSchedule.push(`${day} ${start}`);
+    //     simplifiedSchedule.push(`${day} ${end}`);
+    //   })
+
+    //   course.schedule = simplifiedSchedule;
+    // })
+
+    const coursesBySubject = courses.reduce((acc, course) => {
+      if (acc[course.name]) {
+        acc[course.name].push(course);
+      } else {
+        acc[course.name] = [course];
+      }
+
+      return acc;
+    }, {} as Record<string, Course[]>);
+
+    const days = [
+      "Segunda-feira",
+      "Terça-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Sexta-feira",
+      "Sábado",
+    ]
+
+    const hours = [
+      "08:00",
+      "09:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00",
+      "22:00",
+      "23:00",
+    ]
+    console.log(coursesBySubject);
+
+    return Promise.resolve(Object.values(coursesBySubject));
   }
 }

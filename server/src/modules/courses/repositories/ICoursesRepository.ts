@@ -1,4 +1,4 @@
-import { Course, Department, University } from "@prisma/client";
+import { Course } from "@prisma/client";
 import { ICreateCoursesDTO } from "../dtos/ICreateCoursesDTO";
 
 export interface ICoursesRepository {
@@ -6,4 +6,5 @@ export interface ICoursesRepository {
   findByUniversity(university: string): Promise<Course[]>
   findByDeparment(department: string, university: string): Promise<Course[]>
   delete(university: string): Promise<void>
+  makeTimetable(courses: Course[]): Promise<Course[][]>
 }

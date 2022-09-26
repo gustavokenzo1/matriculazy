@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { AppError } from "../../../../shared/errors/AppError";
 import { CreateUniversityUseCase } from "./CreateUniversityUseCase";
 
 export class CreateUniversityController {
@@ -6,8 +7,12 @@ export class CreateUniversityController {
     const { university, url } = req.body
 
     const createUniversityUseCase = new CreateUniversityUseCase()
-    await createUniversityUseCase.execute({ university, url })
 
-    return next()
+    try {
+      await createUniversityUseCase.execute({ university, url })
+      return next()
+    } catch (error) {
+      throw new AppError("Universidade já existe!")
+    }
   }
 }

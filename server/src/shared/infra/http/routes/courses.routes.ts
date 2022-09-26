@@ -3,6 +3,7 @@ import { CreateCoursesController } from "../../../../modules/courses/useCases/cr
 import { DeleteCoursesController } from "../../../../modules/courses/useCases/deleteCourses/DeleteCoursesController";
 import { ListCoursesByDepartmentController } from "../../../../modules/courses/useCases/listCoursesByDepartment/ListCoursesByDepartmentController";
 import { ListCoursesByUniversityController } from "../../../../modules/courses/useCases/listCoursesByUniversity/ListCoursesByUniversityController";
+import { MakeTimetableController } from "../../../../modules/courses/useCases/makeTimetable/MakeTimetableController";
 import { CreateDepartmentsController } from "../../../../modules/departments/useCases/createDepartments/CreateDepartmentsController";
 import { CreateUniversityController } from "../../../../modules/universities/useCases/createUniversity/CreateUniversityController";
 
@@ -16,9 +17,12 @@ const listCoursesByUniversityController = new ListCoursesByUniversityController(
 const listCoursesByDepartmentController = new ListCoursesByDepartmentController()
 const deleteCoursesController = new DeleteCoursesController()
 
+const makeTimetableController = new MakeTimetableController()
+
 coursesRoutes.post("/", createUniversityController.handle, createDepartmentController.handle, createCoursesController.handle);
 coursesRoutes.get("/university", listCoursesByUniversityController.handle)
 coursesRoutes.get("/department", listCoursesByDepartmentController.handle)
 coursesRoutes.delete("/", deleteCoursesController.handle)
+coursesRoutes.post("/timetable", makeTimetableController.handle)
 
 export { coursesRoutes };

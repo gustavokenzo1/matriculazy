@@ -1,5 +1,6 @@
 import { Department } from "@prisma/client";
 import { Cluster } from "puppeteer-cluster";
+import { AppError } from "../shared/errors/AppError";
 
 interface IDepartment {
   name: string | null;
@@ -15,6 +16,7 @@ interface ICourse {
   classroom: string;
   location: string;
   schedule: string[];
+  simplifiedSchedule: string[];
 }
 
 export async function getCourses(departments: Department[], url: string) {
@@ -50,6 +52,7 @@ export async function getCourses(departments: Department[], url: string) {
         classroom: "unavailable",
         location: "unavailable",
         schedule: ["unavailable"],
+        simplifiedSchedule: ["unavailable"],
       };
 
       course.name = await row.$$eval("span.tituloDisciplina", (el: any) =>
@@ -110,10 +113,28 @@ export async function getCourses(departments: Department[], url: string) {
       course.code = fullName.toString().split(" - ")[0];
 
       if (course.schedule.length > 0) {
-        course.schedule = (course.schedule as any)[0]
+        course.schedule = course.schedule[0]
           .replace(/(\t\n|\n|\t)/gm, "")
           .trim()
           .split(/(?=[A-Z])/);
+
+        const simplifiedSchedule: string[] = [];
+
+        if (course.schedule[0].length > 0) {
+          course.schedule.forEach(schedule => {
+            const day = schedule.split(' ')[0];
+            let start = schedule.split(' ')[1];
+            let end = schedule.split(' ')[3];
+
+            start = `${start.split(':')[0]}:00`;
+            end = `${end.split(':')[0]}:00`;
+
+            simplifiedSchedule.push(`${day} ${start}`);
+            simplifiedSchedule.push(`${day} ${end}`);
+          })
+
+          course.simplifiedSchedule = simplifiedSchedule;
+        }
       }
 
       course.semester = course.semester.toString().trim();

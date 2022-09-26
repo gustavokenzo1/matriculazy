@@ -13,4 +13,14 @@ export class PrismaUniversitiesRepository implements IUniversitiesRepository {
 
     return createdUniversity;
   }
+
+  async find(university: string): Promise<University | null> {
+    const universityExists = await prisma.university.findFirst({
+      where: {
+        name: university
+      }
+    })
+
+    return universityExists
+  }
 }
