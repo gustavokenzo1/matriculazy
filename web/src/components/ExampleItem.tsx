@@ -3,10 +3,9 @@ import { Bed } from "phosphor-react";
 
 interface ExampleItemProps {
   text: string;
-  position: number;
 }
 
-export const ExampleItem = ({ text, position }: ExampleItemProps) => {
+export const ExampleItem = ({ text }: ExampleItemProps) => {
   return (
     <motion.div
       whileHover={{ scale: 1.1 }}
