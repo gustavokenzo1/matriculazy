@@ -113,34 +113,6 @@ export class PrismaCoursesRepository implements ICoursesRepository {
       return acc;
     }, {} as Record<string, Course[]>))
 
-    const days = [
-      "Segunda-feira",
-      "Terça-feira",
-      "Quarta-feira",
-      "Quinta-feira",
-      "Sexta-feira",
-      "Sábado",
-    ]
-
-    const hours = [
-      "08:00",
-      "09:00",
-      "10:00",
-      "11:00",
-      "12:00",
-      "13:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-      "18:00",
-      "19:00",
-      "20:00",
-      "21:00",
-      "22:00",
-      "23:00",
-    ]
-
     function recursion(args: Array<Array<object>>) {
       let onePossibleSchedule: any[] = [];
       let max = args.length - 1;
@@ -172,5 +144,24 @@ export class PrismaCoursesRepository implements ICoursesRepository {
     })
 
     return Promise.resolve(uniqueSchedules);
+  }
+
+  async findBySubject(university: string, subject: string): Promise<Course[]> {
+    const universityId = await prisma.university.findFirst({
+      where: {
+        name: university
+      }
+    })
+
+    const formattedSubject = subject.toUpperCase().trim();
+
+    const courses = await prisma.course.findMany({
+      where: {
+        name: formattedSubject,
+        universityId: universityId?.id
+      }
+    })
+
+    return courses;
   }
 }

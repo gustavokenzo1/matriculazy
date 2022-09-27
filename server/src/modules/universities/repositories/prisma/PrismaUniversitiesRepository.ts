@@ -23,4 +23,10 @@ export class PrismaUniversitiesRepository implements IUniversitiesRepository {
 
     return universityExists
   }
+
+  async list(): Promise<University[]> {
+    const universities = await prisma.university.findMany()
+
+    return universities
+  }
 }

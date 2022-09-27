@@ -7,4 +7,5 @@ export interface ICoursesRepository {
   findByDeparment(department: string, university: string): Promise<Course[]>
   delete(university: string): Promise<void>
   makeTimetable(courses: Course[]): Promise<Course[][]>
+  findBySubject(university: string, subject: string): Promise<Course[]>
 }
