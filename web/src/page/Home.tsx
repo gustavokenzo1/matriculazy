@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "phosphor-react";
-import { AnimatedTimetable } from "../components/AnimatedTimetable";
-import { Graph } from "../components/Graph";
+import { AnimatedTimetable } from "../components/home/AnimatedTimetable";
+import { Graph } from "../components/home/Graph";
 
 import sigaa from "/sigaa.png";
 
