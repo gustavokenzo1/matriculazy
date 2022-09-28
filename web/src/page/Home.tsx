@@ -1,20 +1,21 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "phosphor-react";
-import { ExampleItem } from "../components/ExampleItem";
+import { AnimatedTimetable } from "../components/AnimatedTimetable";
+import { Graph } from "../components/Graph";
 
 import sigaa from "/sigaa.png";
 
 export const Home = () => {
   return (
     <div className="font-gt dark:bg-[#1a1a1a] bg-[#f5f5f5] dark:text-white text-[#1a1a1a] transition-colors">
-      <section className="flex min-h-screen">
-        <div className="w-1/2 flex flex-col items-center justify-center p-20">
-          <div className="flex flex-col gap-4 ml-10">
+      <section className="flex min-h-screen items-center gap-10 lg:gap-0 flex-col lg:flex-row">
+        <div className="w-1/2 flex flex-col items-center justify-center p-10 lg:p-20">
+          <div className="flex flex-col gap-4 lg:ml-10">
             <motion.h1
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
-              className="text-8xl font-bold"
+              className="text-5xl md:text-8xl font-bold mt-20 lg:mt-0"
             >
               MatricuLazy
             </motion.h1>
@@ -22,7 +23,7 @@ export const Home = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1 }}
-              className="text-4xl text-primary-500 font-bold mb-4"
+              className="text-2xl md:text-4xl text-primary-500 font-bold mb-4"
             >
               Um gerador de grade horária para pessoas preguiçosas.
             </motion.p>
@@ -31,7 +32,7 @@ export const Home = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.5 }}
               href="#about"
-              className="flex items-center gap-2 text-2xl font-bold dark:text-secondary-500 hover:gap-4 transition-all"
+              className="flex items-center gap-2 text-xl md:text-2xl font-bold dark:text-secondary-500 hover:gap-4 transition-all"
             >
               <span>Conheça mais</span>
               <ArrowRight size={24} weight="duotone" />
@@ -41,7 +42,7 @@ export const Home = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 2 }}
               href="/timetable"
-              className="flex items-center gap-2 text-2xl font-bold dark:text-secondary-500 hover:gap-4 transition-all"
+              className="flex items-center gap-2 text-xl md:text-2xl font-bold dark:text-secondary-500 hover:gap-4 transition-all"
             >
               <span>Montar grade horária</span>
               <ArrowRight size={24} weight="duotone" />
@@ -49,49 +50,18 @@ export const Home = () => {
           </div>
         </div>
         <motion.div
-          className="w-1/2 flex items-center justify-center"
+          className="w-4/5 lg:w-1/2 flex items-center justify-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.5 }}
         >
-          <motion.div
-            className={`bg-brand-500 rounded-xl shadow-lg p-8 grid grid-cols-5 gap-10 overflow-hidden shadow-brand-500/50`}
-            animate={{
-              height: [110, 200, 300, 300, 200, 110],
-              opacity: 1,
-            }}
-            transition={{
-              times: [0, 0.1, 0.2, 0.8, 0.9, 1],
-              duration: 6,
-              loop: Infinity,
-              delay: 2.5,
-              repeatDelay: 2,
-            }}
-          >
-            <ExampleItem text="Seg" />
-            <ExampleItem text="Ter" />
-            <ExampleItem text="Qua" />
-            <ExampleItem text="Qui" />
-            <ExampleItem text="Sex" />
-            {/* Second row */}
-            <ExampleItem text="C1" />
-            <ExampleItem text="" />
-            <ExampleItem text="APC" />
-            <ExampleItem text="TEP" />
-            <ExampleItem text="" />
-            {/* Third row */}
-            <ExampleItem text="DIAC" />
-            <ExampleItem text="OO" />
-            <ExampleItem text="" />
-            <ExampleItem text="TCC" />
-            <ExampleItem text="TED" />
-          </motion.div>
+          <AnimatedTimetable />
         </motion.div>
       </section>
       <section className="flex flex-col items-center" id="about">
-        <div className="my-20 self-start ml-32">
+        <div className="my-20 self-start ml-10 md:ml-20 lg:ml-32">
           <motion.h1
-            className="text-6xl font-bold"
+            className="text-4xl md:text-6xl font-bold"
             initial={{ opacity: 0, y: 100 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
@@ -102,7 +72,7 @@ export const Home = () => {
             <br /> que utiliza o SIGAA.
           </motion.h1>
           <motion.p
-            className="text-3xl w-1/2 mt-10 font-medium"
+            className="text-xl md:text-3xl w-4/5 md:w-1/2 mt-10 font-medium"
             initial={{ opacity: 0, y: 100 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1 }}
@@ -116,19 +86,58 @@ export const Home = () => {
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 2 }}
-          className="mb-10 rounded-xl shadow-2xl"
+          className="mb-10 rounded-xl shadow-2xl w-4/5 lg:w-1/2"
           src={sigaa}
           alt="Exemplo do SIGAA da Universidade de Brasília que possui o campo de horário."
         />
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="flex items-center gap-4 text-2xl mb-10 font-medium text-secondary-500 hover:brightness-75 cursor-pointer transition-colors"
+          transition={{ duration: 1 }}
+          className="text-center gap-4 w-4/5 text-md md:text-2xl mb-10 font-medium text-secondary-500 hover:brightness-75 cursor-pointer transition-colors"
         >
           Minha Universidade atende a esse requisito, como faço para incluí-la
-          no MatricuLazy? <ArrowRight />
+          no MatricuLazy?
         </motion.p>
+        <a href="#advantages">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="text-md md:text-2xl font-bold flex items-center gap-4 text-secondary-500"
+          >
+            Ver Vantagens <ArrowRight />
+          </motion.p>
+        </a>
+      </section>
+      <section
+        id="advantages"
+        className="flex flex-col items-center h-screen justify-center"
+      >
+        <motion.h1
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-2xl md:text-4xl lg:text-5xl font-bold mb-24 mx-10 md:mx-20 text-brand-500 text-center"
+        >
+          Durma enquanto eles fazem a grade horária
+        </motion.h1>
+        <motion.p
+          className="text-md md:text-2xl font-medium mb-8"
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1 }}
+        >
+          Horas Dormidas x Período de Matrículas
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 2 }}
+          className="w-full md:w-2/3 lg:w-1/2 h-[400px]"
+        >
+          <Graph />
+        </motion.div>
       </section>
     </div>
   );
