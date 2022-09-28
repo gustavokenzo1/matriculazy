@@ -58,57 +58,64 @@ export const Home = () => {
           <AnimatedTimetable />
         </motion.div>
       </section>
-      <section className="flex flex-col items-center" id="about">
-        <div className="my-20 self-start ml-10 md:ml-20 lg:ml-32">
-          <motion.h1
-            className="text-4xl md:text-6xl font-bold"
-            initial={{ opacity: 0, y: 100 }}
+      <section
+        className="flex flex-col min-h-screen items-center justify-center"
+        id="about"
+      >
+        <div className="flex gap-8 lg:gap-10 flex-col lg:flex-row items-center p-4 md:p-10">
+          <div className="w-[95%] lg:w-1/2 flex flex-col md:ml-20">
+            <motion.h1
+              className="text-4xl lg:text-6xl font-bold"
+              initial={{ opacity: 0, y: 100 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+            >
+              <span className="text-secondary-500">
+                Funciona em qualquer Universidade
+              </span>
+              <br /> que utiliza o SIGAA.
+            </motion.h1>
+            <motion.p
+              className="text-xl md:text-3xl mt-10 font-medium"
+              initial={{ opacity: 0, y: 100 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1 }}
+            >
+              O MatricuLazy foi feito para coletar dados do SIGAA de maneira
+              automatizada. Basta que a listagem de disciplinas possua o campo
+              de <span className="text-primary-500 font-bold">Horário</span>:
+            </motion.p>
+          </div>
+          <motion.img
+            initial={{ opacity: 0, y: -100 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <span className="text-secondary-500">
-              Funciona em qualquer Universidade
-            </span>
-            <br /> que utiliza o SIGAA.
-          </motion.h1>
-          <motion.p
-            className="text-xl md:text-3xl w-4/5 md:w-1/2 mt-10 font-medium"
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1 }}
-          >
-            O MatricuLazy foi feito para coletar dados do SIGAA de maneira
-            automatizada. Basta que a listagem de disciplinas possua o campo de{" "}
-            <span className="text-primary-500 font-bold">Horário</span>:
-          </motion.p>
+            transition={{ duration: 1, delay: 2 }}
+            className="w-4/5 md:w-2/3 lg:w-1/2 rounded-xl"
+            src={sigaa}
+            alt="Exemplo do SIGAA da Universidade de Brasília que possui o campo de horário."
+          />
         </div>
-        <motion.img
-          initial={{ opacity: 0, x: -100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 2 }}
-          className="mb-10 rounded-xl shadow-2xl w-4/5 lg:w-1/2"
-          src={sigaa}
-          alt="Exemplo do SIGAA da Universidade de Brasília que possui o campo de horário."
-        />
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="text-center gap-4 w-4/5 text-md md:text-2xl mb-10 font-medium text-secondary-500 hover:brightness-75 cursor-pointer transition-colors"
-        >
-          Minha Universidade atende a esse requisito, como faço para incluí-la
-          no MatricuLazy?
-        </motion.p>
-        <a href="#advantages">
+        <div className="flex flex-col items-center mt-10 md:mt-20">
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="text-md md:text-2xl font-bold flex items-center gap-4 text-secondary-500"
+            transition={{ duration: 1, delay: 3 }}
+            className="text-center gap-4 w-4/5 text-md md:text-2xl mb-10 font-medium text-secondary-500 hover:brightness-75 cursor-pointer transition-colors"
           >
-            Ver Vantagens <ArrowRight />
+            Minha Universidade atende a esse requisito, como faço para incluí-la
+            no MatricuLazy?
           </motion.p>
-        </a>
+          <a href="#advantages">
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 3 }}
+              className="text-md md:text-2xl font-bold flex items-center gap-4 text-secondary-500"
+            >
+              Ver Vantagens <ArrowRight />
+            </motion.p>
+          </a>
+        </div>
       </section>
       <section
         id="advantages"
@@ -123,7 +130,7 @@ export const Home = () => {
           Durma enquanto eles fazem a grade horária
         </motion.h1>
         <motion.p
-          className="text-md md:text-2xl font-medium mb-8"
+          className="text-md md:text-2xl font-medium mb-20"
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1 }}
@@ -133,8 +140,8 @@ export const Home = () => {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 2 }}
-          className="w-full md:w-2/3 lg:w-1/2 h-[400px]"
+          transition={{ duration: 0.5 }}
+          className="w-4/5 md:w-2/3 lg:w-1/2 h-[400px]"
         >
           <Graph />
         </motion.div>
