@@ -22,28 +22,16 @@ export const CoursePopUp = ({
   }, [searchSubjectResults]);
 
   function handleSelectFixedCourse(course: ICourse) {
-    let courseAlreadyAdded = {} as ICourse;
+    const courseAlreadySelected = selectedCourses.some((courses) =>
+      courses.some((c) => c.name === course.name)
+    );
 
-    selectedCourses.forEach((courses) => {
-      courses.forEach((c) => {
-        if (c.name === course.name) {
-          courseAlreadyAdded = course;
-        }
-      });
-    });
-
-    if (!courseAlreadyAdded.name) {
+    if (!courseAlreadySelected) {
       setSelectedCourses([...selectedCourses, [course]]);
     } else {
-      const replacedCourse = selectedCourses.map((courses) => {
-        return courses.map((course) => {
-          if (course.name === course.name) {
-            return course;
-          }
-
-          return course;
-        });
-      });
+      const replacedCourse = selectedCourses.map((courses) =>
+        courses[0].name === course.name ? [course] : courses
+      );
 
       setSelectedCourses(replacedCourse);
     }
@@ -51,27 +39,17 @@ export const CoursePopUp = ({
     setShowCoursePopUp(false);
   }
 
-  function handleDontKnow() {
-    let courseAlreadyAdded = {} as ICourse;
+  function handleDontKnow(courses: ICourse[]) {
+    const courseAlreadySelected = selectedCourses.some((courses) =>
+      courses.some((c) => c.name === courses[0].name)
+    );
 
-    selectedCourses.forEach((courses) => {
-      courses.forEach((course) => {
-        if (course.name === course.name) {
-          courseAlreadyAdded = course;
-        }
-      });
-    });
-
-    if (!courseAlreadyAdded.name) {
+    if (!courseAlreadySelected) {
       setSelectedCourses([...selectedCourses, courses]);
     } else {
-      const replacedCourse = selectedCourses.map((c) => {
-        if (c[0].name === courseAlreadyAdded.name) {
-          return courses;
-        }
-
-        return c;
-      });
+      const replacedCourse = selectedCourses.map((cs) =>
+        cs[0].name === courses[0].name ? courses : cs
+      );
 
       setSelectedCourses(replacedCourse);
     }
@@ -87,32 +65,40 @@ export const CoursePopUp = ({
       >
         <X size={18} />
       </span>
-      <div className="flex flex-col p-6">
+      {courses.length > 0 ? (
+        <>
+          <div className="flex flex-col p-6">
+            <h1 className="text-3xl font-medium text-brand-500">
+              Cursos Encontrados:
+            </h1>
+            <p className="mt-10 text-xl font-medium">
+              Já sabe qual professor/horário prefere para essa matéria?
+            </p>
+            <p className="mt-8 text-xl font-medium">
+              Aqui, você pode selecionar e fixá-la.
+            </p>
+            <p className="mt-8 text-xl font-medium">
+              Caso contrário, você pode selecionar que não sabe, e o sistema irá
+              gerar todas as possibilidades.
+            </p>
+          </div>
+          <div
+            className="mt-4 border border-brand-500 text-lg hover:bg-stone-200 dark:hover:bg-stone-800 p-6 rounded transition-colors cursor-pointer"
+            onClick={() => handleDontKnow(courses)}
+          >
+            Não sei qual professor/horário prefiro
+          </div>
+        </>
+      ) : (
         <h1 className="text-3xl font-medium text-brand-500">
-          Cursos Encontrados:
+          Não foram econtrados cursos para essa matéria :(
         </h1>
-        <p className="mt-10 text-xl font-medium">
-          Já sabe qual professor/horário prefere para essa matéria?
-        </p>
-        <p className="mt-8 text-xl font-medium">
-          Aqui, você pode selecionar e fixá-la.
-        </p>
-        <p className="mt-8 text-xl font-medium">
-          Caso contrário, você pode selecionar que não sabe, e o sistema irá
-          gerar todas as possibilidades.
-        </p>
-      </div>
-      <div
-        className="mt-4 border border-brand-500 text-lg hover:bg-stone-800 p-6 rounded transition-colors cursor-pointer"
-        onClick={() => handleDontKnow()}
-      >
-        Não sei qual professor/horário prefiro
-      </div>
+      )}
       {courses.map((course: ICourse) => {
         return (
           <div
             key={course.id}
-            className="mt-4 text-lg hover:bg-stone-800 p-6 rounded transition-colors cursor-pointer"
+            className="mt-4 text-lg hover:bg-stone-200 dark:hover:bg-stone-800 p-6 rounded transition-colors cursor-pointer"
             onClick={() => handleSelectFixedCourse(course)}
           >
             <h2 className="text-xl font-bold text-secondary-500">

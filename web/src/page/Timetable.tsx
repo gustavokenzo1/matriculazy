@@ -1,9 +1,11 @@
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { UniversityPopUp } from "../components/timetable/UniversityPopUp";
-import api from "../services/api";
 import { SideBar } from "../components/timetable/SideBar";
 import { CoursePopUp } from "../components/timetable/CoursePopUp";
+import { DepartmentPopUp } from "../components/timetable/DepartmentPopUp";
+import { X } from "phosphor-react";
+import { CourseCard } from "../components/timetable/CourseCard";
 
 export interface IUniversity {
   id: string;
@@ -39,9 +41,10 @@ export interface ICourse {
 }
 
 export const Timetable = () => {
+  const [step, setStep] = useState(0);
+
   const [selectedCourses, setSelectedCourses] = useState<ICourse[][]>([]);
 
-  const [step, setStep] = useState(0);
   const [selectedUniversity, setSelectedUniversity] = useState<IUniversity>(
     {} as IUniversity
   );
@@ -49,11 +52,29 @@ export const Timetable = () => {
   const [filteredDepartments, setFilteredDepartments] = useState<IDepartment[]>(
     []
   );
+
+  const [showCoursePopUp, setShowCoursePopUp] = useState(false);
   const [searchSubjectResults, setSearchSubjectResults] = useState<ICourse[]>(
     []
   );
 
-  const [showCoursePopUp, setShowCoursePopUp] = useState(false);
+  const [showDepartmentPopUp, setShowDepartmentPopUp] = useState(false);
+  const [selectedDepartmentCourses, setSelectedDepartmentCourses] = useState<
+    ICourse[]
+  >([]);
+
+  function handleClosePopUps() {
+    setShowCoursePopUp(false);
+    setShowDepartmentPopUp(false);
+  }
+
+  function handleDeleteSelectedCourse(course: ICourse) {
+    const newSelectedCourses = selectedCourses.filter(
+      (c) => c[0].name !== course.name
+    );
+
+    setSelectedCourses(newSelectedCourses);
+  }
 
   return (
     <section className="w-screen min-h-screen flex flex-col justify-center items-center font-gt dark:bg-[#0f0f0f] bg-[#f5f5f5] dark:text-white text-[#121214] transition-colors">
@@ -77,49 +98,51 @@ export const Timetable = () => {
             setFilteredDepartments={setFilteredDepartments}
             setSearchSubjectResults={setSearchSubjectResults}
             setShowCoursePopUp={setShowCoursePopUp}
+            setSelectedDepartmentCourses={setSelectedDepartmentCourses}
+            setShowDepartmentPopUp={setShowDepartmentPopUp}
           />
           <div
             className="flex flex-col p-8 items-start w-full"
-            onClick={() => setShowCoursePopUp(false)}
+            onClick={handleClosePopUps}
           >
-            <h1 className="text-4xl font-bold">Gerador de Grade Horária</h1>
-            <div className="mt-10 flex flex-col w-full">
+            <h1 className="text-4xl font-bold text-brand-500">
+              Gerador de Grade Horária
+            </h1>
+            <div className="mt-10 flex flex-col">
               <h2 className="text-2xl font-medium">Matérias Selecionadas:</h2>
               {selectedCourses.length > 0 ? (
-                <div className="w-full dark:bg-stone-800 bg-stone-200 mt-6 p-4 rounded flex gap-4">
+                <div className="w-full dark:bg-stone-800 bg-stone-200 mt-6 p-4 rounded flex justify-evenly overflow-x-scroll gap-4">
                   {selectedCourses.map((course) => {
-                    return course.length === 1 ? (
-                      <div
+                    return (
+                      <CourseCard
+                        courses={course}
                         key={course[0].id}
-                        className="dark:bg-stone-900 bg-stone-100 w-fit p-4 flex flex-col items-center gap-2"
-                      >
-                        <h3 className="font-bold">{course[0].name}</h3>
-                        <p className="font-medium">{course[0].teacher}</p>
-                      </div>
-                    ) : (
-                      <div
-                        key={course[0].id}
-                        className="dark:bg-stone-900 bg-stone-100 w-fit p-4 flex flex-col items-center gap-2"
-                      >
-                        <h3 className="font-bold">{course[0].name}</h3>
-                        <p className="font-medium">
-                          {course.length} cursos encontrados
-                        </p>
-                      </div>
+                        handleDeleteSelectedCourse={handleDeleteSelectedCourse}
+                      />
                     );
                   })}
                 </div>
               ) : (
-                <h1 className="mt-6 text-2xl">Nenhuma matéria selecionada até o momento :)</h1>
+                <h1 className="mt-6 text-2xl">
+                  Nenhuma matéria selecionada até o momento :)
+                </h1>
               )}
             </div>
           </div>
         </div>
       )}
-      {showCoursePopUp && searchSubjectResults.length > 0 && (
+      {showCoursePopUp && (
         <CoursePopUp
           searchSubjectResults={searchSubjectResults}
           setShowCoursePopUp={setShowCoursePopUp}
+          setSelectedCourses={setSelectedCourses}
+          selectedCourses={selectedCourses}
+        />
+      )}
+      {showDepartmentPopUp && (
+        <DepartmentPopUp
+          setShowDepartmentPopUp={setShowDepartmentPopUp}
+          selectedDepartmentCourses={selectedDepartmentCourses}
           setSelectedCourses={setSelectedCourses}
           selectedCourses={selectedCourses}
         />

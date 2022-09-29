@@ -3,11 +3,11 @@ import { ListCoursesByDepartmentUseCase } from "./ListCoursesByDepartmentUseCase
 
 export class ListCoursesByDepartmentController {
   async handle(req: Request, res: Response) {
-    const { department, university } = req.params;
+    const { department, university } = req.query;
 
     const listCoursesByDepartmentUseCase = new ListCoursesByDepartmentUseCase();
 
-    const courses = await listCoursesByDepartmentUseCase.execute(department, university);
+    const courses = await listCoursesByDepartmentUseCase.execute(department as string, university as string);
 
     return res.status(200).json(courses);
   }

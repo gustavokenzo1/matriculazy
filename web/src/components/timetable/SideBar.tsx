@@ -11,6 +11,8 @@ interface SideBarProps {
   filteredDepartments: IDepartment[];
   setSearchSubjectResults: (courses: ICourse[]) => void;
   setShowCoursePopUp: (show: boolean) => void;
+  setSelectedDepartmentCourses: (courses: ICourse[]) => void;
+  setShowDepartmentPopUp: (show: boolean) => void;
 }
 
 export const SideBar = ({
@@ -20,6 +22,8 @@ export const SideBar = ({
   filteredDepartments,
   setSearchSubjectResults,
   setShowCoursePopUp,
+  setSelectedDepartmentCourses,
+  setShowDepartmentPopUp,
 }: SideBarProps) => {
   const [searchSubject, setSearchSubject] = useState("");
 
@@ -42,18 +46,38 @@ export const SideBar = ({
     });
 
     const data = response.data;
-    
+
     setSearchSubjectResults(data.courses);
     setShowCoursePopUp(true);
   }
 
+  async function handleDepartmentClick(department: IDepartment) {
+    const response = await api.get(`/courses/department`, {
+      params: {
+        department: department.name,
+        university: selectedUniversity.name,
+      },
+    });
+
+    const data = response.data;
+
+    setSelectedDepartmentCourses(data);
+    setShowDepartmentPopUp(true);
+  }
+
+  function handleClosePopUps() {
+    setShowCoursePopUp(false);
+    setShowDepartmentPopUp(false);
+  }
+
   return (
     <motion.aside
-      className="dark:bg-[#141414] bg-white shadow-lg  w-[400px] self-start flex flex-col p-8"
+      className="dark:bg-[#141414] bg-white shadow-lg  w-[400px] self-start flex flex-col p-8 ml-2"
       initial={{ x: -400 }}
       animate={{ x: 0 }}
       exit={{ x: -400 }}
       transition={{ duration: 0.5 }}
+      onClick={handleClosePopUps}
     >
       <div className="flex flex-col gap-4 text-xl">
         <h1 className="text-3xl font-medium text-secondary-500">
@@ -78,14 +102,15 @@ export const SideBar = ({
         <p className="font-medium">Procure por um departamento:</p>
         <input
           type="text"
-          className="rounded text-black p-2 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:bg-stone-800 bg-stone-200 dark:text-white"
+          className="rounded text-black p-2 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:bg-stone-800 bg-stone-100 dark:text-white"
           onChange={handleDepartmentFilter}
         />
         <div className="h-[200px] overflow-y-scroll scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-200 dark:scrollbar-track-stone-800 pr-4">
           {filteredDepartments.map((department: IDepartment) => (
             <p
-              className="text-sm mt-4 hover:bg-primary-500 transition-colors cursor-pointer p-2 rounded"
+              className="text-sm mt-4 hover:bg-primary-500 hover:text-white transition-colors cursor-pointer p-2 rounded"
               key={department.id}
+              onClick={() => handleDepartmentClick(department)}
             >
               {department.name}
             </p>
@@ -97,7 +122,7 @@ export const SideBar = ({
         <p className="font-medium">Procure por um curso:</p>
         <input
           type="text"
-          className="rounded text-black p-2 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:bg-stone-800 bg-stone-200 dark:text-white"
+          className="rounded text-black p-2 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:bg-stone-800 bg-stone-100 dark:text-white"
           onChange={(e) => setSearchSubject(e.target.value)}
           value={searchSubject}
         />
