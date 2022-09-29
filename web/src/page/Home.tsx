@@ -7,7 +7,7 @@ import sigaa from "/sigaa.png";
 
 export const Home = () => {
   return (
-    <div className="font-gt dark:bg-[#1a1a1a] bg-[#f5f5f5] dark:text-white text-[#1a1a1a] transition-colors">
+    <div className="font-gt dark:bg-[#1a1a1a] bg-[#f5f5f5] dark:text-white text-[#1a1a1a] transition-colors ">
       <section className="flex min-h-screen items-center gap-10 lg:gap-0 flex-col lg:flex-row">
         <div className="w-1/2 flex flex-col items-center justify-center p-10 lg:p-20">
           <div className="flex flex-col gap-4 lg:ml-10">

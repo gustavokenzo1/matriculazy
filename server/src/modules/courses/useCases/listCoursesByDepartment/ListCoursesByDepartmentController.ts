@@ -3,7 +3,7 @@ import { ListCoursesByDepartmentUseCase } from "./ListCoursesByDepartmentUseCase
 
 export class ListCoursesByDepartmentController {
   async handle(req: Request, res: Response) {
-    const { department, university } = req.body;
+    const { department, university } = req.params;
 
     const listCoursesByDepartmentUseCase = new ListCoursesByDepartmentUseCase();
 

@@ -31,7 +31,7 @@ export const UniversityPopUp = ({
 
   async function getDepartments() {
     const response = await api.get("/departments", {
-      data: {
+      params: {
         university: selectedUniversity.name,
       },
     });

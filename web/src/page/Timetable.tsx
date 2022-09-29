@@ -2,7 +2,8 @@ import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { UniversityPopUp } from "../components/timetable/UniversityPopUp";
 import api from "../services/api";
-import { formatDate } from "../utils/dateFormatter";
+import { SideBar } from "../components/timetable/SideBar";
+import { CoursePopUp } from "../components/timetable/CoursePopUp";
 
 export interface IUniversity {
   id: string;
@@ -38,6 +39,8 @@ export interface ICourse {
 }
 
 export const Timetable = () => {
+  const [selectedCourses, setSelectedCourses] = useState<ICourse[][]>([]);
+
   const [step, setStep] = useState(0);
   const [selectedUniversity, setSelectedUniversity] = useState<IUniversity>(
     {} as IUniversity
@@ -46,19 +49,14 @@ export const Timetable = () => {
   const [filteredDepartments, setFilteredDepartments] = useState<IDepartment[]>(
     []
   );
+  const [searchSubjectResults, setSearchSubjectResults] = useState<ICourse[]>(
+    []
+  );
 
-  function handleDepartmentFilter(e: React.ChangeEvent) {
-    const { value } = e.target as HTMLSelectElement;
-
-    setFilteredDepartments(
-      departments.filter((el) =>
-        el.name.toLowerCase().includes(value.toLowerCase())
-      )
-    );
-  }
+  const [showCoursePopUp, setShowCoursePopUp] = useState(false);
 
   return (
-    <section className="w-screen min-h-screen flex flex-col justify-center items-center font-gt dark:bg-[#121214] bg-[#f5f5f5] dark:text-white text-[#121214] transition-colors">
+    <section className="w-screen min-h-screen flex flex-col justify-center items-center font-gt dark:bg-[#0f0f0f] bg-[#f5f5f5] dark:text-white text-[#121214] transition-colors">
       <AnimatePresence mode="wait">
         {step === 0 && (
           <UniversityPopUp
@@ -71,46 +69,60 @@ export const Timetable = () => {
         )}
       </AnimatePresence>
       {step === 1 && (
-        <aside className="dark:bg-[#1b1b1b] shadow-lg shadow-brand-500/25 w-[400px] self-start flex flex-col p-4 ml-8 rounded">
-          <div className="flex flex-col gap-4 text-xl">
-            <h1 className="text-3xl font-medium text-secondary-500">
-              {selectedUniversity.name}
-            </h1>
-            <span className="text-xl text-primary-500">
-              <a href={selectedUniversity.url} target="_blank">
-                Link das matérias
-              </a>
-            </span>
-            <p>
-              Adicionada ao MatricuLazy em: <br />
-              {formatDate(selectedUniversity.createdAt)}
-            </p>
-            <p>
-              Última atualização: <br />
-              {formatDate(selectedUniversity.updatedAt)}
-            </p>
-          </div>
-          <hr className="my-6 border-brand-500/50" />
-          <div className="flex flex-col gap-4 text-xl">
-            <p className="font-medium">Procure por um departamento:</p>
-            <input
-              type="text"
-              className="rounded text-black p-2 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:bg-stone-800 dark:text-white"
-              onChange={handleDepartmentFilter}
-            />
-            <div className="h-[200px] overflow-y-scroll scrollbar-thin scrollbar-thumb-primary-500 scrollbar-track-stone-800 pr-4">
-              {filteredDepartments.map((department) => (
-                <p
-                  className="text-sm mt-4 hover:bg-primary-500 transition-colors cursor-pointer p-2 rounded"
-                  key={department.id}
-                >
-                  {department.name}
-                </p>
-              ))}
+        <div className="flex w-full">
+          <SideBar
+            selectedUniversity={selectedUniversity}
+            departments={departments}
+            filteredDepartments={filteredDepartments}
+            setFilteredDepartments={setFilteredDepartments}
+            setSearchSubjectResults={setSearchSubjectResults}
+            setShowCoursePopUp={setShowCoursePopUp}
+          />
+          <div
+            className="flex flex-col p-8 items-start w-full"
+            onClick={() => setShowCoursePopUp(false)}
+          >
+            <h1 className="text-4xl font-bold">Gerador de Grade Horária</h1>
+            <div className="mt-10 flex flex-col w-full">
+              <h2 className="text-2xl font-medium">Matérias Selecionadas:</h2>
+              {selectedCourses.length > 0 ? (
+                <div className="w-full dark:bg-stone-800 bg-stone-200 mt-6 p-4 rounded flex gap-4">
+                  {selectedCourses.map((course) => {
+                    return course.length === 1 ? (
+                      <div
+                        key={course[0].id}
+                        className="dark:bg-stone-900 bg-stone-100 w-fit p-4 flex flex-col items-center gap-2"
+                      >
+                        <h3 className="font-bold">{course[0].name}</h3>
+                        <p className="font-medium">{course[0].teacher}</p>
+                      </div>
+                    ) : (
+                      <div
+                        key={course[0].id}
+                        className="dark:bg-stone-900 bg-stone-100 w-fit p-4 flex flex-col items-center gap-2"
+                      >
+                        <h3 className="font-bold">{course[0].name}</h3>
+                        <p className="font-medium">
+                          {course.length} cursos encontrados
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <h1 className="mt-6 text-2xl">Nenhuma matéria selecionada até o momento :)</h1>
+              )}
             </div>
           </div>
-          <hr className="my-6 border-brand-500/50" />
-        </aside>
+        </div>
+      )}
+      {showCoursePopUp && searchSubjectResults.length > 0 && (
+        <CoursePopUp
+          searchSubjectResults={searchSubjectResults}
+          setShowCoursePopUp={setShowCoursePopUp}
+          setSelectedCourses={setSelectedCourses}
+          selectedCourses={selectedCourses}
+        />
       )}
     </section>
   );

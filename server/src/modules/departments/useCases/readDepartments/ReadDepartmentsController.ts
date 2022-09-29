@@ -3,7 +3,7 @@ import { ReadDepartmentsUseCase } from "./ReadDepartmentsUseCase";
 
 export class ReadDepartmentsController {
   async handle(req: Request, res: Response) {
-    const { university } = req.body
+    const { university } = req.params
 
     const readDepartmentsUseCase = new ReadDepartmentsUseCase()
 
