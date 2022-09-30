@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { IDepartment, IUniversity } from "../../page/Timetable";
+import { IDepartment, IUniversity } from "../../pages/Timetable";
 import api from "../../services/api";
 
 interface UniversityPopUpProps {
@@ -76,7 +76,7 @@ export const UniversityPopUp = ({
       <select
         name="university"
         id="university"
-        className="w-2/3 mt-6 self-center text-black p-2 focus:outline-none rounded focus:ring focus:ring-brand-500 dark:bg-stone-800 dark:text-white"
+        className="w-full md:w-2/3 mt-6 self-center text-black p-2 focus:outline-none rounded focus:ring focus:ring-brand-500 dark:bg-stone-800 dark:text-white"
         onChange={handleSelectUniversity}
       >
         <option value="">Selecione uma universidade</option>

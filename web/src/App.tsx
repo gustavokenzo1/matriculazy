@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DarkModeToggle from "./components/ThemeToggle";
-import { Home } from "./page/Home";
-import { Timetable } from "./page/Timetable";
+import { Home } from "./pages/Home";
+import { Timetable } from "./pages/Timetable";
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { UniversityPopUp } from "../components/timetable/UniversityPopUp";
 import { SideBar } from "../components/timetable/SideBar";
 import { CoursePopUp } from "../components/timetable/CoursePopUp";
@@ -8,7 +8,10 @@ import { CourseCard } from "../components/timetable/CourseCard";
 import { Calendar } from "../components/timetable/Calendar";
 import api from "../services/api";
 import { motion } from "framer-motion";
-import { List } from "phosphor-react";
+import { ArrowLeft, ArrowRight, List } from "phosphor-react";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
+import useDarkMode from "../hooks/useDarkMode";
 
 export interface IUniversity {
   id: string;
@@ -47,6 +50,7 @@ export const Timetable = () => {
   const [step, setStep] = useState(0);
 
   const [selectedCourses, setSelectedCourses] = useState<ICourse[][]>([]);
+  const timetableRef = useRef(null);
 
   const [selectedUniversity, setSelectedUniversity] = useState<IUniversity>(
     {} as IUniversity
@@ -70,6 +74,7 @@ export const Timetable = () => {
 
   const isMobile = window.innerWidth <= 768;
   const [showSideBar, setShowSideBar] = useState(!isMobile);
+  const [resultToShow, setResultToShow] = useState(0);
 
   function handleClosePopUps() {
     setShowCoursePopUp(false);
@@ -113,6 +118,32 @@ export const Timetable = () => {
     });
 
     setFinalResults(timetables.data);
+  }
+
+  function handleReduceResultToShow() {
+    if (resultToShow > 0) {
+      setResultToShow(resultToShow - 1);
+    }
+  }
+
+  function handleIncreaseResultToShow() {
+    if (resultToShow < finalResults.length - 1) {
+      setResultToShow(resultToShow + 1);
+    }
+  }
+
+  async function handleDownload() {
+    const timetable = timetableRef.current;
+    const canvas = await html2canvas(timetable!);
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF();
+    const properties = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (properties.height * pdfWidth) / properties.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("grade_horaria.pdf");
   }
 
   return (
@@ -188,7 +219,7 @@ export const Timetable = () => {
                 <div className="flex flex-col gap-10">
                   <div className="flex lg:flex-row flex-col items-center gap-10">
                     <motion.div
-                      className="flex flex-col w-fit gap-6 h-[400px] mt-10 bg-stone-200 p-6 rounded dark:bg-stone-800 overflow-y-scroll scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-300 dark:scrollbar-track-stone-800 transition-colors"
+                      className="flex flex-col w-full md:w-fit gap-6 h-[400px] mt-10 bg-stone-200 p-6 rounded dark:bg-stone-800 overflow-y-scroll scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-300 dark:scrollbar-track-stone-800 transition-colors"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 1 }}
@@ -280,7 +311,48 @@ export const Timetable = () => {
       )}
       {finalResults.length > 0 && (
         <div className="flex items-center justify-center w-4/5">
-          <Calendar finalResults={finalResults} />
+          <div id="table" className="flex flex-col items-center my-10 w-full">
+            <h1 className="text-2xl font-medium">
+              Foram geradas {finalResults.length} grades horárias!
+            </h1>
+            <div className="flex items-center gap-8 my-10 text-2xl">
+              <ArrowLeft
+                className="cursor-pointer"
+                onClick={handleReduceResultToShow}
+              />
+              <p className="font-medium text-lg">
+                {resultToShow + 1} de {finalResults.length}
+              </p>
+              <ArrowRight
+                className="cursor-pointer"
+                onClick={handleIncreaseResultToShow}
+              />
+            </div>
+            <button
+              className="bg-brand-500 text-white font-bold py-2 px-4 rounded w-[200px] hover:brightness-90 transition-colors mb-8"
+              onClick={handleDownload}
+            >
+              Baixar PDF
+            </button>
+            <div
+              className="w-full overflow-auto flex justify-center flex-col items-center"
+              ref={timetableRef}
+            >
+              <h1 className="text-4xl my-10 font-bold text-secondary-500">
+                Gerado pelo MatricuLazy
+              </h1>
+              <a
+                href="https://matriculazy.vercel.app/"
+                className="text-2xl mb-10 text-primary-500 font-medium"
+              >
+                https://matriculazy.vercel.app/
+              </a>
+              <Calendar
+                finalResults={finalResults}
+                resultToShow={resultToShow}
+              />
+            </div>
+          </div>
         </div>
       )}
     </section>

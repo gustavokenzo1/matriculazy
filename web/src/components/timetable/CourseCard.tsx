@@ -1,5 +1,5 @@
 import { X } from "phosphor-react";
-import { ICourse } from "../../page/Timetable";
+import { ICourse } from "../../pages/Timetable";
 import { motion } from "framer-motion";
 
 interface CourseCardProps {

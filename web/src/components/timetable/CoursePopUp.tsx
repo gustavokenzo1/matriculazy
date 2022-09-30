@@ -1,6 +1,6 @@
 import { X } from "phosphor-react";
 import { useEffect, useState } from "react";
-import { ICourse } from "../../page/Timetable";
+import { ICourse } from "../../pages/Timetable";
 
 interface CoursePopUpProps {
   searchSubjectResults?: ICourse[];

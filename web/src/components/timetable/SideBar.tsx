@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "phosphor-react";
 import { useState } from "react";
-import { ICourse, IDepartment, IUniversity } from "../../page/Timetable";
+import { ICourse, IDepartment, IUniversity } from "../../pages/Timetable";
 import api from "../../services/api";
 import { formatDate } from "../../utils/dateFormatter";
 
@@ -80,9 +80,7 @@ export const SideBar = ({
 
   return (
     <motion.aside
-      className={`dark:bg-[#141414] bg-white shadow-lg  w-[${
-        isMobile ? "300px" : "400px"
-      }] self-start flex flex-col p-8 ml-2 h-screen overflow-y-scroll rounded-lg scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-200 dark:scrollbar-track-stone-800`}
+      className={`dark:bg-[#141414] bg-white shadow-lg max-w-[400px] self-start flex flex-col p-8 ml-2 h-screen overflow-y-scroll rounded-lg scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-200 dark:scrollbar-track-stone-800`}
       initial={{ x: -400 }}
       animate={{ x: 0 }}
       exit={{ x: -400 }}
