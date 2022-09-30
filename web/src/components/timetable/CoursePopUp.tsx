@@ -40,8 +40,8 @@ export const CoursePopUp = ({
   }
 
   function handleDontKnow(courses: ICourse[]) {
-    const courseAlreadySelected = selectedCourses.some((courses) =>
-      courses.some((c) => c.name === courses[0].name)
+    const courseAlreadySelected = selectedCourses.some((cs) =>
+      cs.some((c) => c.name === courses[0].name)
     );
 
     if (!courseAlreadySelected) {

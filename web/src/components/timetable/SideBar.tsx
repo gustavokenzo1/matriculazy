@@ -128,7 +128,7 @@ export const SideBar = ({
         />
       </div>
       <button
-        className="bg-brand-500 text-white mt-4 p-2 rounded hover:brightness-90"
+        className="bg-brand-500 text-white font-bold mt-4 p-2 rounded hover:brightness-90"
         onClick={() => getCourseBySubject()}
       >
         Pesquisar

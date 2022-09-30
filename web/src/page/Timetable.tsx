@@ -1,11 +1,12 @@
 import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { UniversityPopUp } from "../components/timetable/UniversityPopUp";
 import { SideBar } from "../components/timetable/SideBar";
 import { CoursePopUp } from "../components/timetable/CoursePopUp";
 import { DepartmentPopUp } from "../components/timetable/DepartmentPopUp";
-import { X } from "phosphor-react";
 import { CourseCard } from "../components/timetable/CourseCard";
+import { Calendar } from "../components/timetable/Calendar";
+import api from "../services/api";
 
 export interface IUniversity {
   id: string;
@@ -63,6 +64,8 @@ export const Timetable = () => {
     ICourse[]
   >([]);
 
+  const [finalResults, setFinalResults] = useState<ICourse[][]>([]);
+
   function handleClosePopUps() {
     setShowCoursePopUp(false);
     setShowDepartmentPopUp(false);
@@ -74,6 +77,37 @@ export const Timetable = () => {
     );
 
     setSelectedCourses(newSelectedCourses);
+  }
+
+  function handleFelizometro() {
+    switch (selectedCourses.length) {
+      case 1:
+        return "😁";
+      case 2:
+        return "😀";
+      case 3:
+        return "🙂";
+      case 4:
+        return "😐";
+      case 5:
+        return "🤨";
+      case 6:
+        return "🥴";
+      case 7:
+        return "😳";
+      default:
+        return "🤣".repeat(selectedCourses.length - 7);
+    }
+  }
+
+  async function makeTimetable() {
+    const finalCourses = selectedCourses.flat(1);
+    const timetables = await api.post("/courses/timetable", {
+      courses: finalCourses,
+    });
+
+    setFinalResults(timetables.data);
+    console.log(timetables.data);
   }
 
   return (
@@ -111,21 +145,45 @@ export const Timetable = () => {
             <div className="mt-10 flex flex-col">
               <h2 className="text-2xl font-medium">Matérias Selecionadas:</h2>
               {selectedCourses.length > 0 ? (
-                <div className="w-full dark:bg-stone-800 bg-stone-200 mt-6 p-4 rounded flex justify-evenly overflow-x-scroll gap-4">
-                  {selectedCourses.map((course) => {
-                    return (
+                <>
+                  <div className="grid grid-cols-3 h-[200px] gap-6 mt-10 bg-stone-200 p-6 rounded dark:bg-stone-800 overflow-y-scroll scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-300 dark:scrollbar-track-stone-800 transition-all">
+                    {selectedCourses.map((courses) => (
                       <CourseCard
-                        courses={course}
-                        key={course[0].id}
+                        key={courses[0].id}
+                        courses={courses}
                         handleDeleteSelectedCourse={handleDeleteSelectedCourse}
                       />
-                    );
-                  })}
-                </div>
+                    ))}
+                  </div>
+                  <button
+                    className="mt-10 bg-brand-500 text-white font-bold py-2 px-4 rounded w-[200px] hover:brightness-90 transition-colors"
+                    onClick={() => {
+                      setSelectedCourses([]);
+                      setFinalResults([]);
+                    }}
+                  >
+                    Limpar tudo
+                  </button>
+                  <p className="mt-8 text-xl font-medium">
+                    Total de matérias: {selectedCourses.length}
+                  </p>
+                  <p className="mt-2 text-xl font-medium">
+                    Felizômetro: {handleFelizometro()}
+                  </p>
+                  <button
+                    className="my-10 bg-brand-500 text-white font-bold py-2 px-4 rounded w-[200px] hover:brightness-90 transition-colors"
+                    onClick={makeTimetable}
+                  >
+                    Gerar Grade Horária
+                  </button>
+                  {finalResults.length > 0 && (
+                    <Calendar finalResults={finalResults} />
+                  )}
+                </>
               ) : (
-                <h1 className="mt-6 text-2xl">
-                  Nenhuma matéria selecionada até o momento :)
-                </h1>
+                <p className="mt-8 text-xl font-medium">
+                  Você ainda não selecionou nenhuma matéria :)
+                </p>
               )}
             </div>
           </div>
