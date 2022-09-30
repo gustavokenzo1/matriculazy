@@ -157,7 +157,9 @@ export class PrismaCoursesRepository implements ICoursesRepository {
 
     const courses = await prisma.course.findMany({
       where: {
-        name: formattedSubject,
+        name: {
+          contains: formattedSubject
+        },
         universityId: universityId?.id
       }
     })

@@ -7,6 +7,8 @@ import { DepartmentPopUp } from "../components/timetable/DepartmentPopUp";
 import { CourseCard } from "../components/timetable/CourseCard";
 import { Calendar } from "../components/timetable/Calendar";
 import api from "../services/api";
+import { motion } from "framer-motion";
+import { List } from "phosphor-react";
 
 export interface IUniversity {
   id: string;
@@ -66,9 +68,13 @@ export const Timetable = () => {
 
   const [finalResults, setFinalResults] = useState<ICourse[][]>([]);
 
+  const isMobile = window.innerWidth <= 768;
+  const [showSideBar, setShowSideBar] = useState(!isMobile);
+
   function handleClosePopUps() {
     setShowCoursePopUp(false);
     setShowDepartmentPopUp(false);
+    setShowSideBar(false);
   }
 
   function handleDeleteSelectedCourse(course: ICourse) {
@@ -107,11 +113,10 @@ export const Timetable = () => {
     });
 
     setFinalResults(timetables.data);
-    console.log(timetables.data);
   }
 
   return (
-    <section className="w-screen min-h-screen flex flex-col justify-center items-center font-gt dark:bg-[#0f0f0f] bg-[#f5f5f5] dark:text-white text-[#121214] transition-colors">
+    <section className="min-h-screen flex flex-col justify-center items-center font-gt dark:bg-[#0f0f0f] bg-[#f5f5f5] dark:text-white text-[#121214] transition-colors">
       <AnimatePresence mode="wait">
         {step === 0 && (
           <UniversityPopUp
@@ -125,65 +130,131 @@ export const Timetable = () => {
       </AnimatePresence>
       {step === 1 && (
         <div className="flex w-full">
-          <SideBar
-            selectedUniversity={selectedUniversity}
-            departments={departments}
-            filteredDepartments={filteredDepartments}
-            setFilteredDepartments={setFilteredDepartments}
-            setSearchSubjectResults={setSearchSubjectResults}
-            setShowCoursePopUp={setShowCoursePopUp}
-            setSelectedDepartmentCourses={setSelectedDepartmentCourses}
-            setShowDepartmentPopUp={setShowDepartmentPopUp}
-          />
+          {!isMobile ? (
+            <SideBar
+              selectedUniversity={selectedUniversity}
+              departments={departments}
+              filteredDepartments={filteredDepartments}
+              setFilteredDepartments={setFilteredDepartments}
+              setSearchSubjectResults={setSearchSubjectResults}
+              setShowCoursePopUp={setShowCoursePopUp}
+              setSelectedDepartmentCourses={setSelectedDepartmentCourses}
+              setShowDepartmentPopUp={setShowDepartmentPopUp}
+            />
+          ) : (
+            <div className="absolute top-0 m-4">
+              <AnimatePresence mode="wait">
+                {!showSideBar ? (
+                  <List size={24} onClick={() => setShowSideBar(true)} />
+                ) : (
+                  <SideBar
+                    key="sidebar"
+                    selectedUniversity={selectedUniversity}
+                    departments={departments}
+                    filteredDepartments={filteredDepartments}
+                    setFilteredDepartments={setFilteredDepartments}
+                    setSearchSubjectResults={setSearchSubjectResults}
+                    setShowCoursePopUp={setShowCoursePopUp}
+                    setSelectedDepartmentCourses={setSelectedDepartmentCourses}
+                    setShowDepartmentPopUp={setShowDepartmentPopUp}
+                    setShowSideBar={setShowSideBar}
+                  />
+                )}
+              </AnimatePresence>
+            </div>
+          )}
           <div
             className="flex flex-col p-8 items-start w-full"
             onClick={handleClosePopUps}
           >
-            <h1 className="text-4xl font-bold text-brand-500">
+            <motion.h1
+              className="text-4xl font-bold text-brand-500 mt-10 md:mt-0"
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
               Gerador de Grade Horária
-            </h1>
-            <div className="mt-10 flex flex-col">
-              <h2 className="text-2xl font-medium">Matérias Selecionadas:</h2>
+            </motion.h1>
+            <div className="mt-10 flex flex-col w-full">
+              <motion.h2
+                className="text-2xl font-medium"
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 }}
+              >
+                Matérias Selecionadas:
+              </motion.h2>
               {selectedCourses.length > 0 ? (
-                <>
-                  <div className="grid grid-cols-3 h-[200px] gap-6 mt-10 bg-stone-200 p-6 rounded dark:bg-stone-800 overflow-y-scroll scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-300 dark:scrollbar-track-stone-800 transition-all">
-                    {selectedCourses.map((courses) => (
-                      <CourseCard
-                        key={courses[0].id}
-                        courses={courses}
-                        handleDeleteSelectedCourse={handleDeleteSelectedCourse}
-                      />
-                    ))}
+                <div className="flex flex-col gap-10">
+                  <div className="flex lg:flex-row flex-col items-center gap-10">
+                    <motion.div
+                      className="flex flex-col w-fit gap-6 h-[400px] mt-10 bg-stone-200 p-6 rounded dark:bg-stone-800 overflow-y-scroll scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-300 dark:scrollbar-track-stone-800 transition-colors"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 1 }}
+                    >
+                      {selectedCourses.map((courses) => (
+                        <CourseCard
+                          key={courses[0].id}
+                          courses={courses}
+                          handleDeleteSelectedCourse={
+                            handleDeleteSelectedCourse
+                          }
+                        />
+                      ))}
+                    </motion.div>
+                    <div className="flex flex-col items-center gap-10 self-center mt-10">
+                      <motion.p
+                        className="text-xl font-medium"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 1 }}
+                      >
+                        Total de matérias: {selectedCourses.length}
+                      </motion.p>
+                      <motion.p
+                        className="text-xl font-medium"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 1.3 }}
+                      >
+                        Felizômetro: {handleFelizometro()}
+                      </motion.p>
+                      <a href="#table">
+                        <motion.button
+                          className="bg-brand-500 text-white font-bold py-2 px-4 rounded w-[200px] hover:brightness-90 transition-colors"
+                          onClick={makeTimetable}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 1, delay: 1.6 }}
+                        >
+                          Gerar Grade Horária
+                        </motion.button>
+                      </a>
+                      <motion.button
+                        className="bg-brand-500 text-white font-bold py-2 px-4 rounded w-[200px] hover:brightness-90 transition-colors"
+                        onClick={() => {
+                          setSelectedCourses([]);
+                          setFinalResults([]);
+                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 1.9 }}
+                      >
+                        Limpar tudo
+                      </motion.button>
+                    </div>
                   </div>
-                  <button
-                    className="mt-10 bg-brand-500 text-white font-bold py-2 px-4 rounded w-[200px] hover:brightness-90 transition-colors"
-                    onClick={() => {
-                      setSelectedCourses([]);
-                      setFinalResults([]);
-                    }}
-                  >
-                    Limpar tudo
-                  </button>
-                  <p className="mt-8 text-xl font-medium">
-                    Total de matérias: {selectedCourses.length}
-                  </p>
-                  <p className="mt-2 text-xl font-medium">
-                    Felizômetro: {handleFelizometro()}
-                  </p>
-                  <button
-                    className="my-10 bg-brand-500 text-white font-bold py-2 px-4 rounded w-[200px] hover:brightness-90 transition-colors"
-                    onClick={makeTimetable}
-                  >
-                    Gerar Grade Horária
-                  </button>
-                  {finalResults.length > 0 && (
-                    <Calendar finalResults={finalResults} />
-                  )}
-                </>
+                </div>
               ) : (
-                <p className="mt-8 text-xl font-medium">
+                <motion.p
+                  className="mt-8 text-xl font-medium"
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1.5 }}
+                >
                   Você ainda não selecionou nenhuma matéria :)
-                </p>
+                </motion.p>
               )}
             </div>
           </div>
@@ -195,6 +266,7 @@ export const Timetable = () => {
           setShowCoursePopUp={setShowCoursePopUp}
           setSelectedCourses={setSelectedCourses}
           selectedCourses={selectedCourses}
+          setShowSideBar={setShowSideBar}
         />
       )}
       {showDepartmentPopUp && (
@@ -203,7 +275,13 @@ export const Timetable = () => {
           selectedDepartmentCourses={selectedDepartmentCourses}
           setSelectedCourses={setSelectedCourses}
           selectedCourses={selectedCourses}
+          setShowSideBar={setShowSideBar}
         />
+      )}
+      {finalResults.length > 0 && (
+        <div className="flex items-center justify-center w-4/5">
+          <Calendar finalResults={finalResults} />
+        </div>
       )}
     </section>
   );

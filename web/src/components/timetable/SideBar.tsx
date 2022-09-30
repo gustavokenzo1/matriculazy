@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { X } from "phosphor-react";
 import { useState } from "react";
 import { ICourse, IDepartment, IUniversity } from "../../page/Timetable";
 import api from "../../services/api";
@@ -13,6 +14,7 @@ interface SideBarProps {
   setShowCoursePopUp: (show: boolean) => void;
   setSelectedDepartmentCourses: (courses: ICourse[]) => void;
   setShowDepartmentPopUp: (show: boolean) => void;
+  setShowSideBar?: (show: boolean) => void;
 }
 
 export const SideBar = ({
@@ -24,8 +26,10 @@ export const SideBar = ({
   setShowCoursePopUp,
   setSelectedDepartmentCourses,
   setShowDepartmentPopUp,
+  setShowSideBar,
 }: SideBarProps) => {
   const [searchSubject, setSearchSubject] = useState("");
+  const isMobile = window.innerWidth < 768;
 
   function handleDepartmentFilter(e: React.ChangeEvent) {
     const { value } = e.target as HTMLSelectElement;
@@ -38,6 +42,8 @@ export const SideBar = ({
   }
 
   async function getCourseBySubject() {
+    setShowSideBar && setShowSideBar(false);
+
     const response = await api.get(`/courses/subject`, {
       params: {
         university: selectedUniversity.name,
@@ -52,6 +58,8 @@ export const SideBar = ({
   }
 
   async function handleDepartmentClick(department: IDepartment) {
+    setShowSideBar && setShowSideBar(false);
+
     const response = await api.get(`/courses/department`, {
       params: {
         department: department.name,
@@ -72,7 +80,9 @@ export const SideBar = ({
 
   return (
     <motion.aside
-      className="dark:bg-[#141414] bg-white shadow-lg  w-[400px] self-start flex flex-col p-8 ml-2"
+      className={`dark:bg-[#141414] bg-white shadow-lg  w-[${
+        isMobile ? "300px" : "400px"
+      }] self-start flex flex-col p-8 ml-2 h-screen overflow-y-scroll rounded-lg scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-200 dark:scrollbar-track-stone-800`}
       initial={{ x: -400 }}
       animate={{ x: 0 }}
       exit={{ x: -400 }}
@@ -80,6 +90,12 @@ export const SideBar = ({
       onClick={handleClosePopUps}
     >
       <div className="flex flex-col gap-4 text-xl">
+        {isMobile && (
+          <X
+            className="self-end cursor-pointer"
+            onClick={() => setShowSideBar!(false)}
+          />
+        )}
         <h1 className="text-3xl font-medium text-secondary-500">
           {selectedUniversity.name}
         </h1>

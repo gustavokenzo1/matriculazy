@@ -1,5 +1,6 @@
 import { X } from "phosphor-react";
 import { ICourse } from "../../page/Timetable";
+import { motion } from "framer-motion";
 
 interface CourseCardProps {
   courses: ICourse[];
@@ -11,12 +12,17 @@ export const CourseCard = ({
   handleDeleteSelectedCourse,
 }: CourseCardProps) => {
   return (
-    <div
+    <motion.div
       key={courses[0].id}
-      className="dark:bg-stone-900 bg-stone-100 w-[350px] h-full p-4 flex flex-col items-center gap-6 rounded"
+      className="dark:bg-stone-900 bg-stone-100 max-w-[400px] p-4 flex flex-col items-center gap-6 rounded"
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
     >
       <div className="flex w-full justify-between items-start gap-6">
-        <h3 className="font-bold w-4/5 text-secondary-500">{courses[0].name}</h3>
+        <h3 className="font-bold w-4/5 text-secondary-500">
+          {courses[0].name}
+        </h3>
         <X
           className="border rounded-full p-1 border-stone-600 hover:bg-red-500 hover:text-white transition-all cursor-pointer hover:border-none"
           size={24}
@@ -28,6 +34,6 @@ export const CourseCard = ({
       ) : (
         <p className="font-medium">{courses.length} cursos encontrados</p>
       )}
-    </div>
+    </motion.div>
   );
 };

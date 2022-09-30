@@ -63,7 +63,7 @@ export const UniversityPopUp = ({
 
   return (
     <motion.form
-      className="flex flex-col items-start p-8 dark:bg-[#1b1b1b] absolute shadow-secondary-500/25 shadow-xl rounded-lg"
+      className="flex flex-col items-start p-8 m-8 dark:bg-[#1b1b1b] absolute shadow-secondary-500/25 shadow-xl rounded-lg"
       initial={{ opacity: 0, y: "-50vh" }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: "-50vh" }}

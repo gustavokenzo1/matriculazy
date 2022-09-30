@@ -7,6 +7,7 @@ interface CoursePopUpProps {
   setShowCoursePopUp: (show: boolean) => void;
   setSelectedCourses: (courses: ICourse[][]) => void;
   selectedCourses: ICourse[][];
+  setShowSideBar: (show: boolean) => void;
 }
 
 export const CoursePopUp = ({
@@ -14,6 +15,7 @@ export const CoursePopUp = ({
   setShowCoursePopUp,
   setSelectedCourses,
   selectedCourses,
+  setShowSideBar,
 }: CoursePopUpProps) => {
   const [courses, setCourses] = useState<ICourse[]>([]);
 
@@ -37,6 +39,7 @@ export const CoursePopUp = ({
     }
 
     setShowCoursePopUp(false);
+    setShowSideBar(false);
   }
 
   function handleDontKnow(courses: ICourse[]) {
@@ -55,10 +58,11 @@ export const CoursePopUp = ({
     }
 
     setShowCoursePopUp(false);
+    setShowSideBar(false);
   }
 
   return (
-    <div className="absolute flex flex-col max-h-[800px] w-[500px] overflow-y-scroll bg-stone-100 shadow-lg rounded dark:bg-[#1a1a1a] scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-200 dark:scrollbar-track-stone-700 px-6 pb-4">
+    <div className="absolute top-20 m-4 flex flex-col max-h-[800px] max-w-[500px] overflow-y-scroll bg-white shadow-lg rounded dark:bg-[#1a1a1a] scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-200 dark:scrollbar-track-stone-700 px-6 pb-4">
       <span
         className="self-end cursor-pointer dark:bg-stone-700 bg-stone-200 dark:text-white text-stone-800 rounded-full p-1 mt-4"
         onClick={() => setShowCoursePopUp(false)}

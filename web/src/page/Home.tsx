@@ -32,7 +32,7 @@ export const Home = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.5 }}
               href="#about"
-              className="flex items-center gap-2 text-xl md:text-2xl font-bold dark:text-secondary-500 hover:gap-4 transition-all"
+              className="flex items-center gap-2 text-xl md:text-2xl font-bold text-secondary-500 hover:gap-4 transition-all"
             >
               <span>Conheça mais</span>
               <ArrowRight size={24} weight="duotone" />
@@ -42,7 +42,7 @@ export const Home = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 2 }}
               href="/timetable"
-              className="flex items-center gap-2 text-xl md:text-2xl font-bold dark:text-secondary-500 hover:gap-4 transition-all"
+              className="flex items-center gap-2 text-xl md:text-2xl font-bold text-secondary-500 hover:gap-4 transition-all"
             >
               <span>Montar grade horária</span>
               <ArrowRight size={24} weight="duotone" />
