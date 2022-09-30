@@ -7,8 +7,12 @@ export class DeleteCoursesController {
 
     const deleteCoursesUseCase = new DeleteCoursesUseCase();
 
-    await deleteCoursesUseCase.execute(university);
+    try {
+      await deleteCoursesUseCase.execute(university);
 
-    return res.status(200).json({ message: "Courses deleted" });
+      return res.status(200).json({ message: "Courses deleted" });
+    } catch (error) {
+      return res.status(400).json({ message: "Houve um erro ao deletar os cursos" });
+    }
   }
 }

@@ -12,7 +12,7 @@ export class CreateUniversityController {
       await createUniversityUseCase.execute({ university, url })
       return next()
     } catch (error) {
-      throw new AppError("Universidade já existe!")
+      return res.status(400).json({ message: "Houve um erro ao criar a universidade" })
     }
   }
 }

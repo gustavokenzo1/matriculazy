@@ -7,8 +7,12 @@ export class CreateCoursesController {
 
     const createCoursesUseCase = new CreateCoursesUseCase();
 
-    const courses = await createCoursesUseCase.execute({ url, university });
+    try {
+      const courses = await createCoursesUseCase.execute({ url, university });
 
-    return res.status(201).json(courses);
+      return res.status(201).json(courses);
+    } catch (error: any) {
+      return res.status(400).json({ message: "Houve um erro ao criar os cursos" });
+    }
   }
 }

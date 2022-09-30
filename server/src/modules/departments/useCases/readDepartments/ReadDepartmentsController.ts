@@ -7,8 +7,12 @@ export class ReadDepartmentsController {
 
     const readDepartmentsUseCase = new ReadDepartmentsUseCase()
 
-    const departments = await readDepartmentsUseCase.execute(university)
+    try {
+      const departments = await readDepartmentsUseCase.execute(university)
 
-    return res.status(200).json(departments)
+      return res.status(200).json(departments)
+    } catch (error) {
+      return res.status(400).json({ message: "Houve um erro ao listar os departamentos" })
+    }
   }
 }

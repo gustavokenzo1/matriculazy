@@ -6,8 +6,13 @@ export class ListCoursesByUniversityController {
     const { university } = req.body;
 
     const listCoursesByUniversityUseCase = new ListCoursesByUniversityUseCase()
-    const courses = await listCoursesByUniversityUseCase.execute(university);
 
-    return res.status(200).json(courses);
+    try {
+      const courses = await listCoursesByUniversityUseCase.execute(university);
+
+      return res.status(200).json(courses);
+    } catch (error) {
+      return res.status(400).json({ message: "Houve um erro ao listar os cursos" });
+    }
   }
 }

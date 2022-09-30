@@ -7,8 +7,12 @@ export class ListCoursesByDepartmentController {
 
     const listCoursesByDepartmentUseCase = new ListCoursesByDepartmentUseCase();
 
-    const courses = await listCoursesByDepartmentUseCase.execute(department as string, university as string);
+    try {
+      const courses = await listCoursesByDepartmentUseCase.execute(department as string, university as string);
 
-    return res.status(200).json(courses);
+      return res.status(200).json(courses);
+    } catch (error) {
+      return res.status(400).json({ message: "Houve um erro ao listar os cursos" });
+    }
   }
 }

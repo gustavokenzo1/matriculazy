@@ -6,11 +6,16 @@ export class ListCoursesBySubjectController {
     const { subject, university } = req.query;
 
     const listCoursesBySubjectUseCase = new ListCoursesBySubjectUseCase()
-    const courses = await listCoursesBySubjectUseCase.execute(university as string, subject as string);
 
-    return res.status(200).json({
-      found: courses.length,
-      courses
-    });
+    try {
+      const courses = await listCoursesBySubjectUseCase.execute(university as string, subject as string);
+
+      return res.status(200).json({
+        found: courses.length,
+        courses
+      });
+    } catch (error) {
+      return res.status(400).json({ message: "Houve um erro ao listar os cursos" });
+    }
   }
 }

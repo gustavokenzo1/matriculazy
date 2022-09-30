@@ -6,8 +6,13 @@ export class CreateDepartmentsController {
     const { url, university } = req.body
 
     const createDepartmentsUseCase = new CreateDepartmentsUseCase()
-    await createDepartmentsUseCase.execute({ url, university })
 
-    return next()
+    try {
+      await createDepartmentsUseCase.execute({ url, university })
+  
+      return next()
+    } catch (error) {
+      return res.status(400).json({ message: "Houve um erro ao criar os departamentos" })      
+    }
   }
 }

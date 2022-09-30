@@ -7,8 +7,12 @@ export class MakeTimetableController {
 
     const makeTimetableUseCase = new MakeTimetableUseCase();
 
-    const timetable = await makeTimetableUseCase.execute(courses);
+    try {
+      const timetable = await makeTimetableUseCase.execute(courses);
 
-    return res.json(timetable);
+      return res.status(200).json(timetable);
+    } catch (error) {
+      return res.status(400).json({ message: "Houve um erro ao criar a grade horária" });
+    }
   }
 }
