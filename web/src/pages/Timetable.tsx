@@ -12,6 +12,7 @@ import { ArrowLeft, ArrowRight, List } from "phosphor-react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import useDarkMode from "../hooks/useDarkMode";
+import { Alert } from "../components/Alert";
 
 export interface IUniversity {
   id: string;
@@ -75,11 +76,14 @@ export const Timetable = () => {
   const isMobile = window.innerWidth <= 768;
   const [showSideBar, setShowSideBar] = useState(!isMobile);
   const [resultToShow, setResultToShow] = useState(0);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   function handleClosePopUps() {
     setShowCoursePopUp(false);
     setShowDepartmentPopUp(false);
     setShowSideBar(false);
+    setShowAlert(false);
   }
 
   function handleDeleteSelectedCourse(course: ICourse) {
@@ -117,7 +121,18 @@ export const Timetable = () => {
       courses: finalCourses,
     });
 
-    setFinalResults(timetables.data);
+    if (timetables.data.length === 0) {
+      setShowAlert(true);
+      setAlertMessage(
+        "Não foi possível gerar nenhuma grade horária, altere algum curso e tente novamente."
+      );
+    } else {
+      setFinalResults(timetables.data);
+
+      setTimeout(() => {
+        window.location.href = "#table";
+      }, 500);
+    }
   }
 
   function handleReduceResultToShow() {
@@ -251,17 +266,15 @@ export const Timetable = () => {
                       >
                         Felizômetro: {handleFelizometro()}
                       </motion.p>
-                      <a href="#table">
-                        <motion.button
-                          className="bg-brand-500 text-white font-bold py-2 px-4 rounded w-[200px] hover:brightness-90 transition-colors"
-                          onClick={makeTimetable}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 1, delay: 1.6 }}
-                        >
-                          Gerar Grade Horária
-                        </motion.button>
-                      </a>
+                      <motion.button
+                        className="bg-brand-500 text-white font-bold py-2 px-4 rounded w-[200px] hover:brightness-90 transition-colors"
+                        onClick={makeTimetable}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 1.6 }}
+                      >
+                        Gerar Grade Horária
+                      </motion.button>
                       <motion.button
                         className="bg-brand-500 text-white font-bold py-2 px-4 rounded w-[200px] hover:brightness-90 transition-colors"
                         onClick={() => {
@@ -309,8 +322,13 @@ export const Timetable = () => {
           setShowSideBar={setShowSideBar}
         />
       )}
+      <AnimatePresence mode="wait">
+        {showAlert && (
+          <Alert message={alertMessage} setShowAlert={setShowAlert} />
+        )}
+      </AnimatePresence>
       {finalResults.length > 0 && (
-        <div className="flex items-center justify-center w-4/5">
+        <div className="flex items-center flex-col justify-center w-4/5">
           <div id="table" className="flex flex-col items-center my-10 w-full">
             <h1 className="text-2xl font-medium">
               Foram geradas {finalResults.length} grades horárias!

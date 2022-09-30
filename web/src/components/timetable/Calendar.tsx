@@ -79,7 +79,7 @@ export const Calendar = ({ finalResults, resultToShow }: CalendarProps) => {
                 return (
                   <td
                     key={`${day} ${hour}`}
-                    className="p-2 border border-brand-500/25 dark:border-brand-500/50"
+                    className="p-4 border border-brand-500/25 dark:border-brand-500/50"
                   >
                     {finalResults[resultToShow].map((course) => {
                       if (
@@ -88,10 +88,12 @@ export const Calendar = ({ finalResults, resultToShow }: CalendarProps) => {
                         return (
                           <div
                             key={`${course.id} ${day} ${hour}`}
-                            className="bg-brand-500 text-white rounded-md p-2 font-medium flex flex-col gap-2 text-center"
+                            className="bg-brand-500 text-white rounded-md p-2 font-medium flex flex-col text-center"
                           >
-                            <p>{getFirstLetters(course.name)}</p>
+                            <p className="font-bold">{getFirstLetters(course.name)}</p>
                             <p>{getFirstTwoNames(course.teacher)}</p>
+                            <p>Turma {course.classroom}</p>
+                            <p>Local: {course.location}</p>
                           </div>
                         );
                       }
