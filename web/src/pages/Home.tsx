@@ -103,14 +103,14 @@ export const Home = () => {
             className="text-center gap-4 w-4/5 text-md md:text-2xl mb-10 font-medium text-secondary-500 hover:brightness-75 cursor-pointer transition-colors"
           >
             Minha Universidade atende a esse requisito, como faço para incluí-la
-            no MatricuLazy?
+            no MatricuLazy? (em breve)
           </motion.p>
           <a href="#advantages">
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 1, delay: 3 }}
-              className="text-md md:text-2xl font-bold flex items-center gap-4 text-secondary-500"
+              className="text-md md:text-2xl font-bold flex items-center gap-4 text-secondary-500 mb-20"
             >
               Ver Vantagens <ArrowRight />
             </motion.p>
@@ -119,7 +119,7 @@ export const Home = () => {
       </section>
       <section
         id="advantages"
-        className="flex flex-col items-center h-screen justify-center"
+        className="flex flex-col items-center min-h-screen justify-center"
       >
         <motion.h1
           initial={{ opacity: 0, y: 100 }}
@@ -145,6 +145,56 @@ export const Home = () => {
         >
           <Graph />
         </motion.div>
+        <a href="#future" className="mt-20 text-lg md:text-2xl font-bold text-secondary-500">
+          Ver planos para os próximos semestres
+        </a>
+      </section>
+      <section id="future" className="flex flex-col items-center justify-center h-screen">
+        <motion.h1
+          className="text-center text-2xl md:text-4xl font-bold text-brand-500"
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          Planos para os próximos semestres:
+        </motion.h1>
+        <ul className="w-4/5 md:w-1/2 mt-10 text-xl font-medium flex flex-col gap-6">
+          <motion.li
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1 }}
+          >
+            1. Adicionar a possibilidade de avaliar alguma matéria que você já
+            cursou, para que se possa montar grades horárias de maneira
+            rankeada.
+          </motion.li>
+          <motion.li
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.5 }}
+          >
+            2. Adicionar comentários para que os usuários possam avaliar as
+            disciplinas.
+          </motion.li>
+          <motion.li
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 2 }}
+          >
+            3. Aceito sugestões. O projeto é Open Source e, se você for
+            desenvolvedor(a), basta acessar o
+            <a
+              href="https://github.com/gustavokenzo1/matriculazy"
+              className="text-secondary-500"
+              target="_blank"
+            >
+              {" "}
+              repositório do projeto no GitHub.
+            </a>{" "}
+            O projeto é feito em TypeScript, e utiliza Node.js + Prisma no
+            back-end e React + TailwindCSS no front-end.
+          </motion.li>
+        </ul>
       </section>
     </div>
   );

@@ -81,17 +81,17 @@ export const CoursePopUp = ({
             <p className="mt-8 text-xl font-medium">
               Aqui, você pode selecionar e fixá-la.
             </p>
-            <p className="mt-8 text-xl font-medium">
+            {/* <p className="mt-8 text-xl font-medium">
               Caso contrário, você pode selecionar que não sabe, e o sistema irá
               gerar todas as possibilidades.
-            </p>
+            </p> */}
           </div>
-          <div
+          {/* <div
             className="mt-4 border border-brand-500 text-lg hover:bg-stone-200 dark:hover:bg-stone-800 p-6 rounded transition-colors cursor-pointer"
             onClick={() => handleDontKnow(courses)}
           >
             Não sei qual professor/horário prefiro
-          </div>
+          </div> */}
         </>
       ) : (
         <h1 className="text-3xl font-medium text-brand-500">

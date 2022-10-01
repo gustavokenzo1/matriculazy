@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { IDepartment, IUniversity } from "../../pages/Timetable";
 import api from "../../services/api";
+import { TailSpin } from "react-loader-spinner";
+import { Alert } from "../Alert";
 
 interface UniversityPopUpProps {
   setSelectedUniversity: (university: IUniversity) => void;
@@ -16,14 +18,19 @@ export const UniversityPopUp = ({
   selectedUniversity,
   setStep,
   setDepartments,
-  setFilteredDepartments
+  setFilteredDepartments,
 }: UniversityPopUpProps) => {
   const [universities, setUniversities] = useState<IUniversity[]>([]);
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     async function getUniversities() {
-      const { data } = await api.get("/universities");
-      setUniversities(data);
+      try {
+        const { data } = await api.get("/universities");
+        setUniversities(data);
+      } catch (error) {
+        setShowAlert(true);
+      }
     }
 
     getUniversities();
@@ -73,17 +80,31 @@ export const UniversityPopUp = ({
       <label htmlFor="university" className="text-2xl mt-10">
         Selecione a Universidade em que você estuda:
       </label>
-      <select
-        name="university"
-        id="university"
-        className="w-full md:w-2/3 mt-6 self-center text-black p-2 focus:outline-none rounded focus:ring focus:ring-brand-500 dark:bg-stone-800 dark:text-white"
-        onChange={handleSelectUniversity}
-      >
-        <option value="">Selecione uma universidade</option>
-        {universities.map((university) => (
-          <option key={university.id} value={university.id}>{university.name}</option>
-        ))}
-      </select>
+      {universities.length > 0 ? (
+        <select
+          name="university"
+          id="university"
+          className="w-full md:w-2/3 mt-6 self-center text-black p-2 focus:outline-none rounded focus:ring focus:ring-brand-500 dark:bg-stone-800 dark:text-white"
+          onChange={handleSelectUniversity}
+        >
+          <option value="">Selecione uma universidade</option>
+          {universities.map((university) => (
+            <option key={university.id} value={university.id}>
+              {university.name}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <TailSpin
+          height="30"
+          width="30"
+          color="#9922ff"
+          ariaLabel="tail-spin-loading"
+          radius="1"
+          wrapperClass="self-center mt-6"
+          visible={true}
+        />
+      )}
       <button
         className="self-center mt-8 bg-brand-500 disabled:bg-brand-500/50 text-white px-20 py-2 rounded-lg font-bold"
         disabled={!selectedUniversity}
@@ -91,6 +112,12 @@ export const UniversityPopUp = ({
       >
         Avançar
       </button>
+      {showAlert && (
+        <Alert
+          message="Ocorreu um erro ao carregar as universidades, tente novamente mais tarde"
+          setShowAlert={setShowAlert}
+        />
+      )}
     </motion.form>
   );
 };

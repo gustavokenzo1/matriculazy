@@ -6,6 +6,8 @@ import { ListCoursesBySubjectController } from "../../../../modules/courses/useC
 import { ListCoursesByUniversityController } from "../../../../modules/courses/useCases/listCoursesByUniversity/ListCoursesByUniversityController";
 import { MakeTimetableController } from "../../../../modules/courses/useCases/makeTimetable/MakeTimetableController";
 import { CreateDepartmentsController } from "../../../../modules/departments/useCases/createDepartments/CreateDepartmentsController";
+import { CreateStatsController } from "../../../../modules/stats/useCases/createStats/CreateStatsController";
+import { UpdateStatsController } from "../../../../modules/stats/useCases/updateStats/UpdateStatsController";
 import { CreateUniversityController } from "../../../../modules/universities/useCases/createUniversity/CreateUniversityController";
 
 const coursesRoutes = Router();
@@ -20,12 +22,14 @@ const listCoursesByDepartmentController = new ListCoursesByDepartmentController(
 const deleteCoursesController = new DeleteCoursesController()
 
 const makeTimetableController = new MakeTimetableController()
+const createStatsController = new CreateStatsController()
+const updateStatsController = new UpdateStatsController()
 
 coursesRoutes.post("/", createUniversityController.handle, createDepartmentController.handle, createCoursesController.handle);
 coursesRoutes.get("/subject", listCoursesBySubjectController.handle);
 coursesRoutes.get("/university", listCoursesByUniversityController.handle)
 coursesRoutes.get("/department", listCoursesByDepartmentController.handle)
 coursesRoutes.delete("/", deleteCoursesController.handle)
-coursesRoutes.post("/timetable", makeTimetableController.handle)
+coursesRoutes.post("/timetable", createStatsController.handle, updateStatsController.handle, makeTimetableController.handle)
 
 export { coursesRoutes };

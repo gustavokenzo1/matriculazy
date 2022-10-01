@@ -127,7 +127,8 @@ export const Timetable = () => {
         "Não foi possível gerar nenhuma grade horária, altere algum curso e tente novamente."
       );
     } else {
-      setFinalResults(timetables.data);
+      const shuffled = timetables.data.sort(() => 0.5 - Math.random());
+      setFinalResults(shuffled);
 
       setTimeout(() => {
         window.location.href = "#table";

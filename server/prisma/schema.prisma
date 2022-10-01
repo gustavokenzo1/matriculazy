@@ -60,3 +60,14 @@ model University {
 
   @@map("universities")
 }
+
+model Stats {
+  id String @id @default(uuid())
+
+  timetablesCreated Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("stats")
+}

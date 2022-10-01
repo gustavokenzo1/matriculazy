@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "phosphor-react";
 import { useState } from "react";
+import { TailSpin } from "react-loader-spinner";
 import { ICourse, IDepartment, IUniversity } from "../../pages/Timetable";
 import api from "../../services/api";
 import { formatDate } from "../../utils/dateFormatter";
@@ -80,7 +81,9 @@ export const SideBar = ({
 
   return (
     <motion.aside
-      className={`dark:bg-[#141414] bg-white shadow-lg ${!isMobile && 'w-[400px]'} self-start flex flex-col p-8 ml-2 overflow-y-scroll rounded-lg scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-200 dark:scrollbar-track-stone-800`}
+      className={`dark:bg-[#141414] bg-white shadow-lg ${
+        !isMobile && "w-[400px]"
+      } self-start flex flex-col p-8 ml-2 overflow-y-scroll rounded-lg scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-200 dark:scrollbar-track-stone-800`}
       initial={{ x: -400 }}
       animate={{ x: 0 }}
       exit={{ x: -400 }}
@@ -119,17 +122,29 @@ export const SideBar = ({
           className="rounded text-black p-2 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:bg-stone-800 bg-stone-100 dark:text-white"
           onChange={handleDepartmentFilter}
         />
-        <div className="h-[200px] overflow-y-scroll scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-200 dark:scrollbar-track-stone-800 pr-4">
-          {filteredDepartments.map((department: IDepartment) => (
-            <p
-              className="text-sm mt-4 hover:bg-primary-500 hover:text-white transition-colors cursor-pointer p-2 rounded"
-              key={department.id}
-              onClick={() => handleDepartmentClick(department)}
-            >
-              {department.name}
-            </p>
-          ))}
-        </div>
+        {filteredDepartments.length > 0 ? (
+          <div className="h-[200px] overflow-y-scroll scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-stone-200 dark:scrollbar-track-stone-800 pr-4">
+            {filteredDepartments.map((department: IDepartment) => (
+              <p
+                className="text-sm mt-4 hover:bg-primary-500 hover:text-white transition-colors cursor-pointer p-2 rounded"
+                key={department.id}
+                onClick={() => handleDepartmentClick(department)}
+              >
+                {department.name}
+              </p>
+            ))}
+          </div>
+        ) : (
+          <TailSpin
+            height="30"
+            width="30"
+            color="#9922ff"
+            ariaLabel="tail-spin-loading"
+            radius="1"
+            wrapperClass="self-center"
+            visible={true}
+          />
+        )}
       </div>
       <hr className="my-6 border-brand-500/50" />
       <div className="flex flex-col gap-4 text-xl">
