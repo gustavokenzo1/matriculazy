@@ -7,10 +7,10 @@ export class ListUniversitiesController {
 
     try {
       const universities = await listUniversitiesUseCase.execute()
-  
+
       return res.status(200).json(universities)
     } catch (error) {
-      return res.status(400).json({ message: "Houve um erro ao listar as universidades" })      
+      return res.status(400).json({ message: "Houve um erro ao listar as universidades" })
     }
   }
 }

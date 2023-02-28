@@ -12,7 +12,7 @@ export class CreateUniversityUseCase {
     private universitiesRepository: IUniversitiesRepository = new PrismaUniversitiesRepository()
   ) { }
 
-  async execute({ university, url }: IRequest) { 
+  async execute({ university, url }: IRequest) {
     const universityExists = await this.universitiesRepository.find(university)
 
     if (universityExists) {
